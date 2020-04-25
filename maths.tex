@@ -28,16 +28,16 @@
 \maketitle
 \tableofcontents
 \chapter{Derivatives}
-The derivative is the rate of change at a specific point$:$
+The derivative is the rate of change of a function at a specific point$:$
 \begin{align*}
-	\T{When } \D f(x) & > 0 \T{, } f(x) \T{ is increasing} \\
-	\T{When } \D f(x) & < 0 \T{, } f(x) \T{ is decreasing} \\
-	\T{When } \D f(x) & = 0 \T{, } f(x) \T{ is constant}
+	\T{When } \overbrace{\D f(x)}^{\N{the derivative of f(x)}} & > 0 \T{, } f(x) \T{ is increasing} \\
+	\T{When } \D f(x)                                          & < 0 \T{, } f(x) \T{ is decreasing} \\
+	\T{When } \D f(x)                                          & = 0 \T{, } f(x) \T{ is constant}
 \end{align*}
 \pagebreak
 \section{Notation}
 If x is a variable, then $dx$ is a small change in $x$. \\
-$dx$ approaches $0$, but is not equal to $0$. \\
+$dx$ approaches $0$, but is not equal to $0$ (because we divide by $dx$ later). \\
 Instead we ask what happens as $dx$ gets closer and closer to $0:$ \\
 \begin{align*}
 	dx & \to 0 \\
@@ -61,10 +61,12 @@ Putting all of these ideas together gives us the equation for a derivative$:$
 	\end{rcases*}
 	\D f(x) = \LIM{h}{0} \F{f(x+h)-f(x)}{h}
 \end{align*}
-If we know the derivative, we can also compute $df(x):$
+We can also compute $df(x):$
 \begin{align*}
-	\D f(x) & = \F{df(x)}{dx} \\
-	df(x)   & = \D f(x) * dx
+	\D f(x) & = \F{df(x)}{dx}            \\
+	df(x)   & = \D f(x) * dx             \\
+	df(x)   & = \LIM{h}{0} f(x+h) - f(x) \\
+	df(x)   & = f(x+dx) - f(x)
 \end{align*}
 \section{Elementary derivatives}
 \subsection{By $\D f(x):$}
@@ -78,7 +80,7 @@ If we know the derivative, we can also compute $df(x):$
 \end{align*}
 \subsection{By $df(x):$}
 \begin{align*}
-	d(x^a)        & = (x+dx)^a - x^a               \\
+	d(x^a)        & = (x+dx)^a - x^a                            \\
 	              & = x^a
 	+ \overbrace{\begin{matrix}
 			+ (dx + x + x + x + \ldots) \\
@@ -90,10 +92,10 @@ If we know the derivative, we can also compute $df(x):$
 	\left. \phantom{\begin{matrix} \\ \\ \\ \\ \\ \end{matrix}} \right\}
 	\T{a times}
 	+ (\ldots)dx^2
-	- x^a                                          \\
-	d(x^a)        & = ax^{a-1}dx + (\ldots)dx^2    \\
-	\DD{(x^a)}{x} & = ax^{a-1} + (\ldots)dx        \\
-	\D x^a        & = ax^{a-1}\ \because\ dx \to 0 \\
+	- x^a                                                       \\
+	d(x^a)        & = ax^{a-1}dx + (\ldots)dx^2                 \\
+	\DD{(x^a)}{x} & = ax^{a-1} + (\ldots)dx\ \because\ dx \ne 0 \\
+	\D x^a        & = ax^{a-1}\ \because\ dx \to 0              \\
 	              & \Rightarrow \D x = 1
 \end{align*}
 \subsection{By definition $:$}
@@ -101,17 +103,18 @@ If we know the derivative, we can also compute $df(x):$
 	\D e^x = e^x
 \end{align*}
 \subsection{By implicit differentiation $:$}
-This involves taking the derivatives of each variable separately.
-The variables may also be on one side of the equation.
+If you have a function of one variable, then take the change in that function with respect to that variable.
 \begin{align*}
 	y           & = \ln{x}     \\
 	e^y         & = x          \\
 	d(e^y)      & = d(x)       \\
-	e^y dy      & = 1dx        \\
+	e^y * dy    & = 1*dx       \\
 	\F{dy}{dx}  & = \F{1}{e^y} \\
 	\F{d}{dx} y & = \F{1}{x}   \\
 	\D \ln{x}   & = \F{1}{x}
 \end{align*}
+If you have a function of many variables,
+apply \REF{sec:Rules} to break it down into functions of one variable.
 \subsection{By fancy geometry $:$}
 \N{see \url{https://lbry.tv/@3Blue1Brown:b/derivative-formulas-through-geometry}}
 \begin{align*}
@@ -119,50 +122,74 @@ The variables may also be on one side of the equation.
 	\D \cos{x} & = -\sin{x}
 \end{align*}
 Plus other \href{https://www.priklady.eu/cs/matematika/derivace/derivace-funkce.alej}{trigonometric functions} which you probably don't need.
-\subsection{By giving up $:$}
+\subsection{Bonus section $:$}
+Come back after reading \REF{sec:Rules}.
 \begin{align*}
-	\D x^x       & = x^x(\ln{x} + 1) \\
-	\D e^{-x}    & = -e^{-x}         \\
-	\D a^x       & = a^x*\ln{a}      \\
-	\D \log_a{x} & = \F{1}{x\ln{a}}
+	\D e^{-x} & = e^{-x} * (-1) \\
+	\D e^{-x} & = -e^{-x}       \\
+\end{align*}
+Note that $\ln (a^x)$ is the same as $x \ln a$.
+\begin{align*}
+	a^x    & = e^{\ln a^x}         \\
+	a^x    & = e^{x \ln a}         \\
+	\D a^x & = e^{x \ln a} * \ln a \\
+	\D a^x & = a^x \ln a           \\
 \end{align*}
 \pagebreak
-\section{Rules}
+\begin{align*}
+	y              & = \log_a{x}                  \\
+	a^y            & = x                          \\
+	d(a^y)         & = d(x)                       \\
+	a^y \ln a * dy & = 1*dx                       \\
+	\DD{y}{x}      & = \F{1}{a^y \ln a}           \\
+	\D y           & = \F{1}{a^{\log_a{x}} \ln a} \\
+	\D \log_a{x}   & = \F{1}{x \ln a}
+\end{align*}
+\begin{align*}
+	f(x)     & = x^x                               \\
+	\ln f(x) & = \ln (x^x)                         \\
+	\ln f(x) & = x \ln x                           \\
+	f(x)     & = e^{x \ln x}                       \\
+	\D x^x   & = e^{x \ln x} * (1*\ln x\ +\ x*1/x) \\
+	\D x^x   & = e^{x \ln x} * (\ln x + 1)         \\
+\end{align*}
+\pagebreak
+\section{Rules} \label{sec:Rules}
 \subsection{Sum rule}
 \N{see \url{https://lbry.tv/@3Blue1Brown:b/derivative-formulas-through-geometry}}
 \begin{align*}
-	\D (g(x) + h(x)) & = \D g(x) + \D h(x)
+	\D (g(x) + h(x)) & = \D g(x)\ +\ \D h(x)
 \end{align*}
 \begin{align*}
-	\D (\sin{x} + x^2) & = \D \sin{x} + \D x^2 = \cos{x} + 2x \\
-	\D (x + 1)         & = 1 + 0 = 1                          \\
+	\D (\sin{x} + x^2) & = \D \sin{x}\ +\ \D x^2 = \cos{x} + 2x \\
+	\D (x + 1)         & = 1 + 0 = 1                            \\
 	\D (x^3 + e^x)     & = 3x^2 + e^x
 \end{align*}
 \pagebreak
 \subsection{Product rule}
 \N{see \url{https://lbry.tv/@3Blue1Brown:b/visualizing-the-chain-rule-and-product}}
 \begin{align*}
-	d(g(x) * h(x))        & = dg(x)*h(x) + g(x)*dh(x) + dg(x)*dh(x)                           \\
-	\DD{(g(x) * h(x))}{x} & = \DD{g(x)}{x}*h(x) + g(x)*\DD{h(x)}{x} + \DD{g(x)}{x}*h(x)*dh(x) \\
-	\D (g(x) * h(x))      & = \D g(x) * h(x) + g(x) * \D h(x)\ \because\ dh(x) \to 0
+	d(g(x) * h(x))        & = dg(x)*h(x)\ +\ g(x)*dh(x)\ +\ dg(x)*dh(x)                      \\
+	\DD{(g(x) * h(x))}{x} & = \DD{g(x)}{x}*h(x)\ +\ g(x)*\DD{h(x)}{x}\ +\ \DD{g(x)}{x}*dh(x) \\
+	\D (g(x) * h(x))      & = \D g(x) * h(x)\ +\ g(x) * \D h(x)\ \because\ dh(x) \to 0
 \end{align*}
 \begin{align*}
 	\D (\sin{x} * x^2)
-	 & = \D \sin{x} * x^2 + \sin{x} * \D x^2
-	= \cos{x} * x^2 + \sin{x} * 2x           \\
+	 & = \D \sin{x} * x^2\ +\ \sin{x} * \D x^2
+	= \cos{x} * x^2\ +\ \sin{x} * 2x           \\
 	\D (2 * x)
-	 & = 0 * x + 2 * 1
-	= 2                                      \\
+	 & = 0 * x\ +\ 2 * 1
+	= 2                                        \\
 	\D \F{\sin{x}}{x}
 	 & = \D (\sin{x} * 1/x)
 	= \F{\cos{x}}{x} - \F{\sin{x}}{x^2}
 \end{align*}
 This also leads to a formula for division $:$
 \begin{align*}
-	\D \F{g(x)}{h(x)} & = \F{\D g(x) * h(x) - g(x) * \D h(x)}{h(x)^2}
+	\D \F{g(x)}{h(x)} & = \F{\D g(x) * h(x)\ -\ g(x) * \D h(x)}{h(x)^2}
 \end{align*}
 \pagebreak
-\subsection{Derivative with respect to $f(x):$} \label{d/df(x)}
+\subsection{Derivative with respect to $f(x):$}
 You simply treat $f(x)$ as if it was $x:$
 \begin{align*}
 	\DD{}{(x^2)} \sin{(x^2)}
@@ -172,16 +199,16 @@ You simply treat $f(x)$ as if it was $x:$
 \end{align*}
 \subsection{Chain rule}
 \begin{align*}
-	\D g(h(x)) & = \DD{g(h(x))}{x}                     \\
-	\D g(h(x)) & = \DD{g(h(x))}{h(x)} * \DD{h(x)}{x}   \\
-	\D g(h(x)) & = \DD{}{h(x)} g(h(x)) * \DD{}{x} h(x) \\
+	\D g(h(x)) & = \DD{g(h(x))}{x}                       \\
+	\D g(h(x)) & = \DD{g(h(x))}{h(x)}\ *\ \DD{h(x)}{x}   \\
+	\D g(h(x)) & = \DD{}{h(x)} g(h(x))\ *\ \DD{}{x} h(x) \\
 \end{align*}
 \begin{align*}
 	\D \sin{(x^2)}
-	 & = \cos{(x^2)} * 2x              \\
-	\D \F{1}{(\sin{x})}
-	 & = \F{-1}{(\sin{x})^2} * \cos{x}
-	= -\F{\cos{x}}{(\sin{x})^2}        \\
+	 & = \cos{(x^2)} * 2x                                 \\
+	\D \F{1}{\sin{x}}
+	 & = \D (\sin x)^{-1} = -1*(\sin{x})^{-2}\ *\ \cos{x}
+	= -\F{\cos{x}}{(\sin{x})^2}                           \\
 \end{align*}
 \pagebreak
 \subsection{L'Hopital's rule}
@@ -195,7 +222,7 @@ You simply treat $f(x)$ as if it was $x:$
 	\LIM{x}{0} \F{\sin{x}}{x} & = 1
 \end{align*}
 \subsection{Derivative of inverse function}
-Given $g(x)$, the inverse of $f(x):$
+$g(x)$ being the inverse of $f(x):$
 \begin{align*}
 	g(f(x))           & = x              \\
 	\D f(x) * \D g(x) & = 1              \\
