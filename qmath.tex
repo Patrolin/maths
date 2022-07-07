@@ -1,0 +1,93 @@
+\documentclass[twoside]{article}
+\usepackage{multicol}
+\setlength{\columnsep}{2cm}
+\setlength{\columnseprule}{0.5pt}
+
+% fonts
+    \usepackage[sc]{mathpazo} % Use the Palatino font
+    \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+    \linespread{1.05} % Line spacing - Palatino needs more space between lines
+    \usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+    \usepackage[english]{babel} % Language hyphenation and typographical rules
+
+    \usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+    \usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+    \usepackage{booktabs} % Horizontal rules in tables
+
+    \usepackage{titling} % Customizing the title section
+    \usepackage{abstract} % Allows abstract customization
+    \renewcommand{\abstractnamefont}{\normalfont\bfseries} % set abstract title to bold
+    \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % set abstract text to small italic
+    \renewcommand{\maketitlehookd}{
+        \begin{abstract}
+        \abstracttext
+        \end{abstract}
+    }
+
+    \usepackage{titlesec} % Allows customization of titles
+    \setlength{\droptitle}{-4\baselineskip} % Move the title up
+    \renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+    \renewcommand\thesubsection{\roman{subsection}} % roman numerals for subsections
+    \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+    \titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+    \pretitle{\begin{center}\Huge\bfseries} % Article title formatting
+    \posttitle{\end{center}} % Article title closing formatting
+
+    \usepackage{fancyhdr} % Headers and footers
+    \pagestyle{fancy} % All pages have headers and footers
+    \fancyhead{} % Blank out the default header
+    \fancyfoot{} % Blank out the default footer
+    \fancyhead[C]{Running title $\bullet$ May 2016 $\bullet$ Vol. XXI, No. 1} % Custom header text
+    \fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+%\setlength{\skip\footins}{10mm}
+%\setlength{\parskip}{1ex}
+
+% utility functions
+    \newcommand{\M}[1]{\scriptstyle{#1}} % math text
+    \newcommand{\T}[1]{\textrm{#1}} % text in math mode
+    \newcommand{\B}[1]{\left(#1\right)} % big brackets
+    \newcommand{\F}[2]{\frac{#1}{#2}} % fraction
+    \newcommand{\caret}{\raisebox{0.5ex}{$\scriptstyle\wedge$}}
+
+% header
+\makeatletter % allow @ symbol as a character
+\title{Representing mathematical expressions in plain text}
+\author{\textsc{Patrolin}}
+\date{\today}
+\newcommand{\abstracttext}{
+    Standard math notation often relies on spacing and/or 2D layout for legibility,
+    this translates poorly to 1D (often monospace or nearly monospace) text used in programming and text files.
+    Moreover the standard math notation is hard to explain in a few sentences and leads to confusion about operator precedence
+    when you start adding domain-specific operators ($\M{\&\&}$, $\M{||}$, $\M{<<}$, $\M{>>}$, $\M{\&}$, $\M{|}$, $\caret$, $\M{@}$).
+}
+
+% body
+\begin{document}
+    \maketitle
+    \thispagestyle{empty}
+
+    \begin{multicols}{2}
+        \section{Standard notation (SN)}
+            Brackets are a good fallback, they let you express any expression you want although very verbosely.\\
+            \centerline{$ (a + b) * c $}
+            \centerline{$ a + (b * c) $}
+            \centerline{$ a + (((b * c) * d) * e) $}
+            \vspace{8px}\\
+            You probably don't want to write brackets all day, so SN has many alternative representations.\\
+            E(MD)(AS) says that exponentiation $a^b$ takes precedence over multiplication $a*b$ and division $\F{a}{b}$, both of which have the same precedence,
+            and all of them take precedence over addition $a+b$ and subtraction $a-b$.
+            \vspace{15px}\\
+            You may notice how inconsistent the presentation of these operators is.\\
+            You can also choose to write $a*b$ as $ab$, however this now has higher precedence than $a/b$, which is our best hope for writing $\F{a}{b}$ in plain text.
+            \vspace{15px}\\
+            Not to mention that exponentiation is right-associative, meaning $a^{b^c} = a^{\B{b^c}}$, unlike the rest of the operators,
+            since the left-associative version can be represented differently $(a^b)^c = a^{b*c}$,
+            however in practice nobody uses the right-associative version because a) it is unintuitive and b) nobody wants to or has to deal with numbers of this magnitude anyway.\\
+            ... and we'd have to write $a^b$ as $a\caret{}b$.
+        \columnbreak
+        \section{wow}
+            Column Number 2
+    \end{multicols}
+\end{document}
