@@ -1,7 +1,9 @@
 \documentclass[twoside]{article}
 \usepackage{multicol}
-\setlength{\columnsep}{2cm}
-\setlength{\columnseprule}{0.5pt}
+\setlength{\columnsep}{4cm}
+\setlength{\columnseprule}{0pt}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{topsep=0pt,itemsep=-0.5ex,partopsep=0.5ex,parsep=0.5ex}
 
 % fonts
     \usepackage[sc]{mathpazo} % Use the Palatino font
@@ -38,7 +40,7 @@
     \pagestyle{fancy} % All pages have headers and footers
     \fancyhead{} % Blank out the default header
     \fancyfoot{} % Blank out the default footer
-    \fancyhead[C]{Running title $\bullet$ May 2016 $\bullet$ Vol. XXI, No. 1} % Custom header text
+    \fancyhead[C]{} % Custom header text
     \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
 %\setlength{\skip\footins}{10mm}
@@ -50,6 +52,10 @@
     \newcommand{\B}[1]{\left(#1\right)} % big brackets
     \newcommand{\F}[2]{\frac{#1}{#2}} % fraction
     \newcommand{\caret}{\raisebox{0.5ex}{$\scriptstyle\wedge$}}
+    \newcommand{\percent}{\T{ \% }}
+    \newcommand{\rem}{\T{ rem }}
+    \newcommand{\mod}{\T{ mod }}
+    \newcommand{\ifelse}[3]{#1\T{ ? }#2\T{ : }#3}
 
 % header
 \makeatletter % allow @ symbol as a character
@@ -68,26 +74,109 @@
     \maketitle
     \thispagestyle{empty}
 
-    \begin{multicols}{2}
+    \begin{multicols*}{2}
         \section{Standard notation (SN)}
-            Brackets are a good fallback, they let you express any expression you want although very verbosely.\\
-            \centerline{$ (a + b) * c $}
-            \centerline{$ a + (b * c) $}
-            \centerline{$ a + (((b * c) * d) * e) $}
-            \vspace{8px}\\
-            You probably don't want to write brackets all day, so SN has many alternative representations.\\
-            E(MD)(AS) says that exponentiation $a^b$ takes precedence over multiplication $a*b$ and division $\F{a}{b}$, both of which have the same precedence,
-            and all of them take precedence over addition $a+b$ and subtraction $a-b$.
-            \vspace{15px}\\
-            You may notice how inconsistent the presentation of these operators is.\\
-            You can also choose to write $a*b$ as $ab$, however this now has higher precedence than $a/b$, which is our best hope for writing $\F{a}{b}$ in plain text.
-            \vspace{15px}\\
-            Not to mention that exponentiation is right-associative, meaning $a^{b^c} = a^{\B{b^c}}$, unlike the rest of the operators,
-            since the left-associative version can be represented differently $(a^b)^c = a^{b*c}$,
-            however in practice nobody uses the right-associative version because a) it is unintuitive and b) nobody wants to or has to deal with numbers of this magnitude anyway.\\
-            ... and we'd have to write $a^b$ as $a\caret{}b$.
-        \columnbreak
-        \section{wow}
-            Column Number 2
-    \end{multicols}
+            Brackets are a good fallback, they let you express any expression you want although very verbosely.\vspace{1px}\\
+            \centerline{$ (a + b) \cdot c $}
+            \centerline{$ a + (b \cdot c) $}
+            \centerline{$ a + (((b \cdot c) \cdot d) \cdot e) $}
+            \par\vspace{5px}
+                You probably don't want to write brackets all day,
+                so SN has many alternative representations.
+                \par
+                E(MD)(AS) says that exponentiation $a^b$ takes precedence
+                over multiplication $a\cdot{}b$ and division $\F{a}{b}$, both of which have the same precedence,
+                and all of them take precedence over addition $a+b$ and subtraction $a-b$ (both of which have the same precedence).
+                \par
+                Therefore:\vspace{2px}\\
+                \centerline{$ a + b \cdot c = a + (b \cdot c) $}
+                \centerline{$ (a + b) \cdot c = (a + b) \cdot c $}\vspace{-1px}
+            \par\vspace{5px}
+                You may notice how inconsistent the presentation of these operators is,
+                to write these in plain text we have to use someting like:\\
+                $a\caret{}b$ for $a^b$, $a*b$ for $a\cdot{}b$, $a/b$ for $\F{a}{b}$
+                \par
+                You can also choose to write $a\cdot{}b$ as $ab$
+                (or really $a\ b$ so we know where one name ends and the other begins),
+                however this now has higher precedence than $a/b$, but still lower precedence than $a\caret{}b$.
+            \par\vspace{5px}
+                Not to mention that exponentiation is right-associative,
+                meaning $a^{b^c} = a^{\B{b^c}}$, unlike the rest of the operators,
+                since the left-associative version can be represented differently $(a^b)^c = a^{bc}$,
+                however in practice nobody uses the right-associative version because
+                \begin{enumerate}[a)]
+                    \item it is unintuitive
+                    \item nobody wants to or has to deal with numbers of this magnitude anyway.
+                \end{enumerate}
+            \par\vspace{5px}
+                You may also encounter functions like $ f(a, b) = a \cdot b + b^2 $,
+                then you evaluate the function at some point $ f(3,5) = 3\cdot5 + 5^2 = 40 $
+                \par
+                If a function only has one variable you can write it without brackets
+                (usually this is only done with $\sin$ and $\cos$):\vspace{2px}\\
+                \centerline{$ \sin x = \sin(x) $}
+                This prefix operator then requires its own precedence; below $ab$, but above $a\cdot{}b$:\vspace{2px}\\
+                \centerline{$ \sin xe^x = \sin(x(e^x)) $}
+                \centerline{$ \sin x \cdot e^x = \sin(x) \cdot (e^x) $}
+            \par\vspace{5px}
+                This means that SN actually uses EIP(MD)(AS):
+                \begin{enumerate}[1.]
+                    \item Exponentiation
+                    \item Implicit multiplication
+                    \item Prefix operators
+                    \item Multiplication/Division
+                    \item Addition/Subtraction
+                \end{enumerate}
+        \section{Quick notation (QN)}
+            Parsing long expressions can be complicated (especially for humans),
+            so why not just make left-to-right the default.
+            \begin{enumerate}[a)]
+                \item every operator has the same precedence
+                \item every operator is left-associative
+            \end{enumerate}
+            \par\vspace{2px}
+                Therefore:\vspace{2px}\\
+                \centerline{$ a + b * c = (a + b) * c $}
+                \centerline{$ a + (b * c) = a + (b * c) $}\vspace{-1px}
+            \par\vspace{5px}
+                This makes adding new operators trivial
+                and hopefully reduces the average brackets needed per expression.
+                \par
+                    At least it does so in the case of polyfilling the modulo operator in Javascript,
+                    where the $\percent$ operator is the remainder function:\vspace{4px}\\
+                \centerline{$ a \T{ mod } b = a \percent b + b \percent b = ((a \percent b) + b) \percent b $}
+            \par\vspace{5px}
+                You could also include implicit multiplication $a\ b$,
+                but this doesn't save you any characters over $a*b$.
+            \par\vspace{5px}
+                A consequence of this system is that
+                you may have to write more brackets for operators with higher precedence in SN,
+                however these are rarely used:\vspace{2px}\\
+                \centerline{$ \sin x = \sin(x) $}
+                \centerline{$ \sin (x * (e \caret x)) = \sin(x * (e \caret x)) $}
+                \centerline{$ \sin x * (e \caret x) = (\sin x) * (e \caret x) $}
+    \end{multicols*}
+    \section{Results}
+        \begin{center}
+        \begin{tabular}{ccc}
+            \hline
+            %\multicolumn{3}{c}{Multi-column}\\
+            Lerp SN & $ lerp(t, a, b) = (1 - t) * a + t * b $\\
+            Lerp QN & $ lerp(t, a, b) = 1 - t * a + (t * b) $\\
+            Modulo SN & $ a \mod b = ((a \rem b) + b) \rem b $\\
+            Modulo QN & $ a \mod b = a \rem b + b \rem b $\\
+            Modulo2 SN & $ a \mod b = (a \rem b) + (b * (a < 0)) $\\
+            Modulo2 QN & $ a \mod b = (a \rem b) + (b * (a < 0)) $\\
+            Remainder SN & $ a \rem b = (a \mod b) - (b * (a < 0)) $\\
+            Remainder QN & $ a \rem b = a \mod b - (b * (a < 0)) $\\
+            Quadratic formula SN & $ (-b + (b \caret 2 - 4 * a * c) \caret 0.5) / (2 * a) $\\
+            Quadratic formula QN & $ (-b + (b \caret 2 - (4 * a * c)) \caret 0.5) / (2 * a) $\\
+            Modular exponentiation SN & $ x_n = (x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0})) \mod p$\\
+            Modular exponentiation QN & $ x_n = x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0}) \mod p$\\
+            \hline
+        \end{tabular}
+        \end{center}
+        \par\vspace{5px}
+            In conclusion the characters savings of QN are insignificant,
+            but the simpler ruleset may still be preferable over SN.
 \end{document}
