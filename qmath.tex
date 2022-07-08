@@ -56,6 +56,8 @@
     \newcommand{\rem}{\T{ rem }}
     \newcommand{\mod}{\T{ mod }}
     \newcommand{\ifelse}[3]{#1\T{ ? }#2\T{ : }#3}
+    \newcommand{\plusminus}{\pm}
+    \newcommand{\minusplus}{\mp}
 
 % header
 \makeatletter % allow @ symbol as a character
@@ -169,8 +171,8 @@
             Modulo2 QN & $ a \mod b = (a \rem b) + (b * (a < 0)) $\\
             Remainder SN & $ a \rem b = (a \mod b) - (b * (a < 0)) $\\
             Remainder QN & $ a \rem b = a \mod b - (b * (a < 0)) $\\
-            Quadratic formula SN & $ (-b + (b \caret 2 - 4 * a * c) \caret 0.5) / (2 * a) $\\
-            Quadratic formula QN & $ (-b + (b \caret 2 - (4 * a * c)) \caret 0.5) / (2 * a) $\\
+            Quadratic formula SN & $ (-b \plusminus (b \caret 2 - 4 * a * c) \caret 0.5) / (2 * a) $\\
+            Quadratic formula QN & $ (-b \plusminus (b \caret 2 - (4 * a * c)) \caret 0.5) / (2 * a) $\\
             Modular exponentiation SN & $ x_n = (x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0})) \mod p$\\
             Modular exponentiation QN & $ x_n = x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0}) \mod p$\\
             \hline
