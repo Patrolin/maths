@@ -51,13 +51,21 @@
     \newcommand{\T}[1]{\textrm{#1}} % text in math mode
     \newcommand{\B}[1]{\left(#1\right)} % big brackets
     \newcommand{\F}[2]{\frac{#1}{#2}} % fraction
-    \newcommand{\caret}{\raisebox{0.5ex}{$\scriptstyle\wedge$}}
     \newcommand{\percent}{\T{ \% }}
+    \newcommand{\pow}{\T{ }\M{**}\T{ }}
     \newcommand{\rem}{\T{ rem }}
     \newcommand{\mod}{\T{ mod }}
     \newcommand{\ifelse}[3]{#1\T{ ? }#2\T{ : }#3}
     \newcommand{\plusminus}{\pm}
     \newcommand{\minusplus}{\mp}
+    \newcommand{\booland}{\T{ }\M{\&\&}\T{ }}
+    \newcommand{\boolor}{\T{ }\M{||}\T{ }}
+    \newcommand{\bitand}{\T{ }\M{\&}\T{ }}
+    \newcommand{\bitor}{\T{ }\M{|}\T{ }}
+    \newcommand{\bitxor}{\T{ }\raisebox{0.5ex}{$\scriptstyle\wedge$}\T{ }}
+    \newcommand{\rightshift}{\T{ }\M{>>}\T{ }}
+    \newcommand{\leftshift}{\T{ }\M{<<}\T{ }}
+    \newcommand{\matrixmul}{\T{ }\M{@}\T{ }}
 
 % header
 \makeatletter % allow @ symbol as a character
@@ -68,7 +76,7 @@
     Standard math notation often relies on spacing and/or 2D layout for legibility,
     this translates poorly to 1D (often monospace or nearly monospace) text used in programming and text files.
     Moreover the standard math notation is hard to explain in a few sentences and leads to confusion about operator precedence
-    when you start adding domain-specific operators ($\M{\&\&}$, $\M{||}$, $\M{<<}$, $\M{>>}$, $\M{\&}$, $\M{|}$, $\caret$, $\M{@}$).
+    when you start adding many (domain-specific) operators ($\booland$, $\boolor$, $\leftshift$, $\rightshift$, $\bitand$, $\bitor$, $\bitxor$, $\matrixmul$).
 }
 
 % body
@@ -96,11 +104,11 @@
             \par\vspace{5px}
                 You may notice how inconsistent the presentation of these operators is,
                 to write these in plain text we have to use someting like:\\
-                $a\caret{}b$ for $a^b$, $a*b$ for $a\cdot{}b$, $a/b$ for $\F{a}{b}$
+                $a\pow{}b$ for $a^b$, $a*b$ for $a\cdot{}b$, $a/b$ for $\F{a}{b}$
                 \par
                 You can also choose to write $a\cdot{}b$ as $ab$
                 (or really $a\ b$ so we know where one name ends and the other begins),
-                however this now has higher precedence than $a/b$, but still lower precedence than $a\caret{}b$.
+                however this now has higher precedence than $a/b$, but still lower precedence than $a\pow{}b$.
             \par\vspace{5px}
                 Not to mention that exponentiation is right-associative,
                 meaning $a^{b^c} = a^{\B{b^c}}$, unlike the rest of the operators,
@@ -110,16 +118,17 @@
                     \item it is unintuitive
                     \item nobody wants to or has to deal with numbers of this magnitude anyway.
                 \end{enumerate}
-            \par\vspace{5px}
+            \centerline{}\vspace{5px}
                 You may also encounter functions like $ f(a, b) = a \cdot b + b^2 $,
-                then you evaluate the function at some point $ f(3,5) = 3\cdot5 + 5^2 = 40 $
+                then you can evaluate the function at some point $ f(3,5) = 3\cdot5 + 5^2 = 40 $
                 \par
                 If a function only has one variable you can write it without brackets
                 (usually this is only done with $\sin$ and $\cos$):\vspace{2px}\\
                 \centerline{$ \sin x = \sin(x) $}
-                This prefix operator then requires its own precedence; below $ab$, but above $a\cdot{}b$:\vspace{2px}\\
-                \centerline{$ \sin xe^x = \sin(x(e^x)) $}
-                \centerline{$ \sin x \cdot e^x = \sin(x) \cdot (e^x) $}
+                \par
+                    This prefix operator then requires its own precedence; below $ab$, but above $a\cdot{}b$:\vspace{2px}\\
+                \centerline{$ \sin xe^x = \sin(x \cdot (e \pow x)) $}
+                \centerline{$ \sin x \cdot e^x = \sin(x) \cdot (e \pow x) $}
             \par\vspace{5px}
                 This means that SN actually uses EIP(MD)(AS):
                 \begin{enumerate}[1.]
@@ -142,43 +151,49 @@
                 \centerline{$ a + (b * c) = a + (b * c) $}\vspace{-1px}
             \par\vspace{5px}
                 This makes adding new operators trivial
-                and hopefully reduces the average brackets needed per expression.
-                \par
-                    At least it does so in the case of polyfilling the modulo operator in Javascript,
-                    where the $\percent$ operator is the remainder function:\vspace{4px}\\
+                and hopefully reduces the brackets needed per expression,
+                like with polyfilling the modulo operator in Javascript:\vspace{4px}\\
                 \centerline{$ a \T{ mod } b = a \percent b + b \percent b = ((a \percent b) + b) \percent b $}
-            \par\vspace{5px}
-                You could also include implicit multiplication $a\ b$,
-                but this doesn't save you any characters over $a*b$.
             \par\vspace{5px}
                 A consequence of this system is that
                 you may have to write more brackets for operators with higher precedence in SN,
-                however these are rarely used:\vspace{2px}\\
-                \centerline{$ \sin x = \sin(x) $}
-                \centerline{$ \sin (x * (e \caret x)) = \sin(x * (e \caret x)) $}
-                \centerline{$ \sin x * (e \caret x) = (\sin x) * (e \caret x) $}
+                however this really only applies to addition/subtraction followed by multiplication/division:\vspace{2px}\\
+                \centerline{$ a + bx = a + (b*x) $}
+                \centerline{$ a - \F{b}{x} = a - (b/x) $}
+                \centerline{$ a * b^x = a * (b \pow x) $}
+            \centerline{}
+                You could also include implicit multiplication $a\ b$,
+                but this doesn't actually save you any characters over $a*b$.
     \end{multicols*}
     \section{Results}
         \begin{center}
-        \begin{tabular}{ccc}
+        \begin{tabular}{ll}
             \hline
             %\multicolumn{3}{c}{Multi-column}\\
-            Lerp SN & $ lerp(t, a, b) = (1 - t) * a + t * b $\\
-            Lerp QN & $ lerp(t, a, b) = 1 - t * a + (t * b) $\\
-            Modulo SN & $ a \mod b = ((a \rem b) + b) \rem b $\\
-            Modulo QN & $ a \mod b = a \rem b + b \rem b $\\
-            Modulo2 SN & $ a \mod b = (a \rem b) + (b * (a < 0)) $\\
-            Modulo2 QN & $ a \mod b = (a \rem b) + (b * (a < 0)) $\\
-            Remainder SN & $ a \rem b = (a \mod b) - (b * (a < 0)) $\\
-            Remainder QN & $ a \rem b = a \mod b - (b * (a < 0)) $\\
-            Quadratic formula SN & $ (-b \plusminus (b \caret 2 - 4 * a * c) \caret 0.5) / (2 * a) $\\
-            Quadratic formula QN & $ (-b \plusminus (b \caret 2 - (4 * a * c)) \caret 0.5) / (2 * a) $\\
-            Modular exponentiation SN & $ x_n = (x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0})) \mod p$\\
-            Modular exponentiation QN & $ x_n = x_{n-1} * (\ifelse{b_i}{x_{n-1}}{x_0}) \mod p$\\
+            Lerp SN & \texttt{lerp(t, a, b) = (1 - t) * a + t * b}\\
+            Lerp QN & \texttt{lerp(t, a, b) = 1 - t * a + (t * b)}\vspace{5px}\\
+            Modulo SN & \texttt{a mod b = ((a rem b) + b) rem b}\\
+            Modulo QN & \texttt{a mod b = a rem b + b rem b}\vspace{5px}\\
+            Modulo2 SN & \texttt{a mod b = (a rem b) + (b * (a < 0))}\\
+            Modulo2 QN & \texttt{a mod b = (a rem b) + (b * (a < 0))}\vspace{5px}\\
+            Remainder SN & \texttt{a rem b = (a mod b) - (b * (a < 0))}\\
+            Remainder QN & \texttt{a rem b = a mod b - (b * (a < 0))}\vspace{5px}\\
+            Quadratic formula SN & \texttt{(-b + (b ** 2 - 4 * a * c) ** 0.5) / (2 * a)}\\
+            Quadratic formula QN & \texttt{(-b + (b ** 2 - (4 * a * c)) ** 0.5) / (2 * a)}\vspace{5px}\\
+            Modular exponentiation SN & \texttt{x[n] = (x[n-1] * (b[i] ?‌ x[n-1] :‌ x[0])) mod p}\\
+            Modular exponentiation QN & \texttt{x[n] = x[n-1] * (b[i] ?‌ x[n-1] :‌ x[0]) mod p}\vspace{5px}\\
+            Xorshift excerpt SN & \texttt{(x <‌< k) | (x >‌> (64 - k))}\\
+            Xorshift excerpt QN & \texttt{x <‌< k | (x >‌> (64 - k))}\vspace{5px}\\
+            Mersenne twister excerpt SN & \texttt{y | ((y >‌> u) \& d)}\\
+            Mersenne twister excerpt QN & \texttt{y | (y >‌> u \& d)}\\
             \hline
         \end{tabular}
         \end{center}
         \par\vspace{5px}
-            In conclusion the characters savings of QN are insignificant,
-            but the simpler ruleset may still be preferable over SN.
+            Notice how "Mersenne twister excerpt SN" has brackets for \texttt{(y >‌> u) \& d},
+            this may or may not be required depending on the programming language used,
+            as everyone makes up their own precedence rules.
+            \par
+                In conclusion QN provides an easy to understand, easy to extend, perhaps shorter notation
+                for mathematical expressions.
 \end{document}
