@@ -1,0 +1,176 @@
+\documentclass[twoside]{article}
+\usepackage{multicol}
+\setlength{\columnsep}{4cm}
+\setlength{\columnseprule}{0pt}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{topsep=0pt,itemsep=-0.5ex,partopsep=0.5ex,parsep=0.5ex}
+
+% fonts
+    \usepackage[sc]{mathpazo} % Use the Palatino font
+    \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+    \linespread{1.05} % Line spacing - Palatino needs more space between lines
+    \usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+    \usepackage[english]{babel} % Language hyphenation and typographical rules
+
+    \usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+    \usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+    \usepackage{booktabs} % Horizontal rules in tables
+
+    \usepackage{titling} % Customizing the title section
+    \usepackage{abstract} % Allows abstract customization
+    \renewcommand{\abstractnamefont}{\normalfont\bfseries} % set abstract title to bold
+    \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % set abstract text to small italic
+    \renewcommand{\maketitlehookd}{
+        \begin{abstract}
+        \abstracttext
+        \end{abstract}
+    }
+
+    \usepackage{titlesec} % Allows customization of titles
+    \setlength{\droptitle}{-4\baselineskip} % Move the title up
+    \renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+    \renewcommand\thesubsection{\roman{subsection}} % roman numerals for subsections
+    \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+    \titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+    \pretitle{\begin{center}\Huge\bfseries} % Article title formatting
+    \posttitle{\end{center}} % Article title closing formatting
+
+    \usepackage{fancyhdr} % Headers and footers
+    \pagestyle{fancy} % All pages have headers and footers
+    \fancyhead{} % Blank out the default header
+    \fancyfoot{} % Blank out the default footer
+    \fancyhead[C]{} % Custom header text
+    \fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+    \usepackage{amsmath} % aligned
+
+%\setlength{\skip\footins}{10mm}
+%\setlength{\parskip}{1ex}
+
+% utility functions
+    \newcommand{\M}[1]{\scriptstyle{#1}} % math text
+    \newcommand{\T}[1]{\textrm{#1}} % text in math mode
+    \newcommand{\B}[1]{\left(#1\right)} % big brackets
+    \newcommand{\F}[2]{\frac{#1}{#2}} % fraction
+    \newcommand{\percent}{\T{ \% }}
+    \newcommand{\pow}{\T{ }\M{**}\T{ }}
+    \newcommand{\rem}{\T{ rem }}
+    \newcommand{\ifelse}[3]{#1\T{ ? }#2\T{ : }#3}
+    \newcommand{\plusminus}{\pm}
+    \newcommand{\minusplus}{\mp}
+    \newcommand{\booland}{\T{ }\M{\&\&}\T{ }}
+    \newcommand{\boolor}{\T{ }\M{||}\T{ }}
+    \newcommand{\bitand}{\T{ }\M{\&}\T{ }}
+    \newcommand{\bitor}{\T{ }\M{|}\T{ }}
+    \newcommand{\bitxor}{\T{ }\raisebox{0.5ex}{$\scriptstyle\wedge$}\T{ }}
+    \newcommand{\rightshift}{\T{ }\M{>>}\T{ }}
+    \newcommand{\leftshift}{\T{ }\M{<<}\T{ }}
+    \newcommand{\matrixmul}{\T{ }\M{@}\T{ }}
+    \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
+
+% header
+\makeatletter % allow @ symbol as a character
+\title{A summary of Projective Geometric Algebra}
+\author{\textsc{Patrolin}}
+\date{\today}
+\newcommand{\abstracttext}{
+
+}
+
+% body
+\begin{document}
+    \maketitle
+    \thispagestyle{empty}
+
+    \begin{multicols*}{2}
+        \section{Geometric numbers}
+            \centerline{$ 1 + x^2 = 0 $}
+            \centerline{$ x = \T{?} $}\vspace{5px}
+            \par
+                x is not a real number; but if it's not real, why should the other numbers be real?
+                \begin{gather*}
+                    \B{e_1}^2 + \B{e_2}^2 = \B{e_0}^2 \\
+                    \B{e_1}^2 = 1;\, \B{e_2}^2 = -1;\, \B{e_0}^2 = 0 \\
+                \end{gather*}
+            \par
+                In fact, we can define as many of these as we want, the simplest examples being:
+                $$\begin{aligned}
+                    &a + b e_1 \texttt{ // hyperbolic numbers} \\
+                    &a + b e_2 \texttt{ // complex numbers} \\
+                    &a + b e_0 \texttt{ // dual numbers} \\
+                \end{aligned}$$
+            \par
+                We can multiply these numbers together using the geometric product:
+                \begin{gather*}
+                    e_i e_i = \{1, -1, 0\} \\
+                    e_i e_j = -e_j e_i \\
+                \end{gather*}
+            \par
+                This product is neither commutative nor anticommutative, but it is distributive and associative:
+                $$\begin{aligned}
+                    AB &\neq BA \\
+                    AB &\neq -BA \\
+                    A(B+C) &= AB + AC \\
+                    (AB)C &= A(BC) \\
+                    aB &= Ba;\, a \in \mathbb{R}\\
+                \end{aligned}$$
+            \vfill\null\columnbreak
+            \par
+                Thus the product of two complex numbers: \\
+                $$\begin{aligned}
+                    & (A_1 + A_2 e_2)(B_1 + B_2 e_2) \\
+                    & = A_1 B_1 + A_1 B_2 e_2 + A_2 e_2 B_1 + A_2 e_2 B_2 e_2 \\
+                    & = A_1 B_1 + A_1 B_2 e_2 + A_2 B_1 e_2 + A_2 B_2 \\
+                    & = (A_1 B_1 + A_2 B_2) + (A_1 B_2 + A_2 B_1) e_2 \\
+                \end{aligned}$$
+        \section{Rotations}
+            \par
+                A multivector with n basis vectors consists of $ 2^n $ blades:
+                \begin{enumerate}[-]
+                    \item \texttt{scalar = 0-vector}
+                    \item \texttt{vector = 1-vector}
+                    \item \texttt{bivector = 2-vector}
+                    \item \texttt{trivector = 3-vector}
+                    \item \texttt{...}
+                    \item \texttt{(n-1)-vector = pseudovector}
+                    \item \texttt{n-vector = pseudoscalar}
+                \end{enumerate} \vspace{5px}
+                Where a k-vector has $n \choose k$ blades, for example:
+                $$\begin{aligned}
+                    A = & \, A_1 \\
+                    &+ A_2 e_0 + A_3 e_1 + A_4 e_2 \\
+                    &+ A_5 e_{01} + A_6 e_{02} + A_7 e_{12} \\
+                    &+ A_8 e_{012} \\
+                \end{aligned}$$
+                \aside{We can abbreviate blades like $ e_1 e_2 $ as $ e_{12} $.}
+            \par
+                Multiplying two multivectors gives you another multivector,
+                we can use the taylor series expansion of the exponential function
+                to find a rotation $e^A$:
+                $$ e^x = \sum_{k=0}^\infty \F{x^k}{k!} $$
+                $$\begin{aligned}
+                    &e^{a e_2} = 1 + a e_2 - \F{a^2}{2} - \F{a^3}{3} e_2 + ... \\
+                    &\texttt{ // by the sum being convergent} \\
+                    &= (1 - \F{a^2}{2} + ...) + (a - \F{a^3}{3} + ...) e_2 \\
+                    &= cos(a) + sin(a) e_2 \\
+                \end{aligned}$$
+            \par
+                Similarly you can find
+                $$ e^{e_i} = \begin{cases}
+                    cos(a) + sin(a) e_i & (\B{e_i}^2 = -1) \\
+                    cosh(a) + sinh(a) e_i & (\B{e_i}^2 = 1) \\
+                    1 + e_i & (\B{e_i}^2 = 0)
+                    \end{cases}$$
+            \par
+                This gives us rotations, hyperbolic rotations and translations (rotations through infinity) respectively.
+            \par
+                Then for a multivector we would have:
+                \begin{gather*}
+                    e^A = e^{A_1} e^{A_2 e_0} e^{A_3 e_1} \, ... \, e^{A_n e_I} \\
+                \end{gather*}
+        \section{Shapes and sizes}
+            \par
+                TODO
+    \end{multicols*}
+\end{document}
