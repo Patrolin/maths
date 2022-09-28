@@ -43,7 +43,12 @@
     \fancyhead[C]{} % Custom header text
     \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
+    %\usepackage{scalerel,stackengine}
+    %\stackMath
+    \usepackage[utf8]{inputenc}
     \usepackage{amsmath} % aligned
+    \usepackage{tikz} % dash over
+    \makeatletter % allow @ symbol as a character
 
 %\setlength{\skip\footins}{10mm}
 %\setlength{\parskip}{1ex}
@@ -70,8 +75,21 @@
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
 
+    % dashed overline
+    \newcommand{\overdash}[1]{%
+        \tikz[baseline=(todotted.base)]{
+            \node[inner sep=1pt,outer sep=0pt] (todotted) {$#1$};
+            \draw[dashed, line width=0.05mm] (todotted.north west) -- (todotted.north east);
+        }%
+    }
+    \newcommand{\underdash}[1]{%
+        \tikz[baseline=(todotted.base)]{
+            \node[inner sep=1pt,outer sep=0pt] (todotted) {$#1$};
+            \draw[dashed, line width=0.2mm] (todotted.south west) -- (todotted.south east);
+        }%
+    }
+
 % header
-\makeatletter % allow @ symbol as a character
 \title{A summary of Projective Geometric Algebra}
 \author{\textsc{Patrolin}}
 \date{\today}
@@ -114,7 +132,7 @@
                     AB &\neq -BA \\
                     A(B+C) &= AB + AC \\
                     (AB)C &= A(BC) \\
-                    aB &= Ba;\, a \in \mathbb{R}\\
+                    aB &= Ba;\, a \in \mathbb{R} \\
                 \end{aligned}$$
             \vfill\null\columnbreak
             \par
@@ -179,16 +197,19 @@
                     \tilde{X} = (-1)^\floor{k/2} X \texttt{ // reverse} \\
                     X^\dagger = (-1)^\floor{k} X \texttt{ // involute} \\
                     \bar{X} = (-1)^\floor{k+k/2} X \texttt{ // conjugate} \\
+                    complement(A) = \sum complement(X) \\
                 \end{gather*}
             \par
                 Poincaré duality states that maps between k-vectors and (n-k)-vectors exist.
-                $$ X \, dual(X) = \plusminus \mathbb{1} $$
+                \begin{gather*}
+                    X \, dual(X) = \plusminus \mathbb{1}
+                \end{gather*}
             \par
                 For example:
                 \begin{gather*}
                     \underline{X} X = \mathbb{1} \texttt{ // left complement} \\
                     X \overline{X} = \mathbb{1} \texttt{ // right complement} \\
-                    X X^\star = sign(X_{ND} \widetilde{X_{ND}}) \, \mathbb{1} \texttt{ // hodge dual} \\
+                    X X^\star = sign(X_{ND} \widetilde{X_{ND}}) \, \mathbb{1} \texttt{ // hodge dual}
                 \end{gather*}
                 Where $ X_{ND} $ is $ X $ without degenerate basis vectors, e.g.
                 $$ X = e_{012}; \, X_{ND} = e_{12} $$
@@ -199,12 +220,13 @@
                 Then for $ \mathbb{G}_{a,0,c} $:
                 $$ \overline{X} = X^\star $$
             \par
-                And if that wasn't confusing enough applying a dual twice changes the signs,
+                And if all that wasn't confusing enough, applying a dual twice changes the signs,
                 so we also want the inverses of these duals:
                 \begin{gather*}
                     (X^\star)^{\star^{-1}} = X \\
+                    \overdash{\overline{X}} = X \\
+                    \underdash{\underline{X}} = X
                 \end{gather*}
-                TODO: right complement inverse?
         \section{Shapes and sizes}
             \par
                 TODO

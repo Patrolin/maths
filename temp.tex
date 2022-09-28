@@ -1,0 +1,39 @@
+\documentclass[11pt,a4paper,draft]{article}
+\usepackage{scalerel,stackengine}
+\stackMath
+\usepackage[utf8]{inputenc}
+\usepackage{tikz} %for dash
+\def\Overline#1{\ThisStyle{\overline{\addstackgap[.4pt]{\SavedStyle#1}}}}
+
+\makeatletter
+
+\newcommand{\dashover}[1]{%
+  \ThisStyle{%
+  \vbox {\m@th\ialign{##\crcr
+  \preclosurefill \crcr
+  \noalign{\kern-\p@\nointerlineskip}
+  $\hfil\SavedStyle{#1}\hfil$\crcr}}}}
+
+%% fill with (short) minus signs
+\def\preclosurefill{%
+  $\m@th%
+  \xleaders\hbox{$\mkern0mu\shortbar\mkern0mu$}\hfill%
+  \shortbar%
+$}
+
+%% make the minus shorter to fit \dashedleftarrow
+\def\shortbar{%
+  \smash{\scalebox{0.4}[1.0]{$-$}}}
+\makeatother
+
+\begin{document}
+
+In order to distinguish between lattice operations $\bigvee, \bigwedge$ in structure A, we use the following symbols: $\Overline{\bigvee}, \Overline{\bigwedge}$. Similarly, to distinguish between operations $\bigvee, \bigwedge$ in structure B, we use the following symbols: $\dashover{\bigvee}, \dashover{\bigwedge}$.
+
+Inline: $\Overline{\bigvee}_{\alpha \in I}$, $\dashover{\bigvee}_{\alpha \in I}$.
+
+In separate line:
+\[
+\Overline{\bigvee_{\alpha \in I}}, \dashover{\bigvee_{\alpha \in I}}.
+\]
+\end{document}
