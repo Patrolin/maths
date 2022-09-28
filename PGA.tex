@@ -67,6 +67,7 @@
     \newcommand{\rightshift}{\T{ }\M{>>}\T{ }}
     \newcommand{\leftshift}{\T{ }\M{<<}\T{ }}
     \newcommand{\matrixmul}{\T{ }\M{@}\T{ }}
+    \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
 
 % header
@@ -128,13 +129,13 @@
             \par
                 A multivector with n basis vectors consists of $ 2^n $ blades:
                 \begin{enumerate}[-]
-                    \item \texttt{scalar = 0-vector}
+                    \item \texttt{scalar = 0-vector =} $\mathbf{1}$
                     \item \texttt{vector = 1-vector}
                     \item \texttt{bivector = 2-vector}
                     \item \texttt{trivector = 3-vector}
                     \item \texttt{...}
                     \item \texttt{(n-1)-vector = pseudovector}
-                    \item \texttt{n-vector = pseudoscalar}
+                    \item \texttt{n-vector = pseudoscalar =} $\mathbb{1}$
                 \end{enumerate} \vspace{5px}
                 Where a k-vector has $n \choose k$ blades, for example:
                 $$\begin{aligned}
@@ -169,6 +170,41 @@
                 \begin{gather*}
                     e^A = e^{A_1} e^{A_2 e_0} e^{A_3 e_1} \, ... \, e^{A_n e_I} \\
                 \end{gather*}
+        \section{Duality}
+            \par
+                For a blade X in a k-vector we can define some operations,
+                like reversing the order of basis vectors in the blade,
+                that just amount to some sign flips:
+                \begin{gather*}
+                    \tilde{X} = (-1)^\floor{k/2} X \texttt{ // reverse} \\
+                    X^\dagger = (-1)^\floor{k} X \texttt{ // involute} \\
+                    \bar{X} = (-1)^\floor{k+k/2} X \texttt{ // conjugate} \\
+                \end{gather*}
+            \par
+                Poincaré duality states that maps between k-vectors and (n-k)-vectors exist.
+                $$ X \, dual(X) = \plusminus \mathbb{1} $$
+            \par
+                For example:
+                \begin{gather*}
+                    \underline{X} X = \mathbb{1} \texttt{ // left complement} \\
+                    X \overline{X} = \mathbb{1} \texttt{ // right complement} \\
+                    X X^\star = sign(X_{ND} \widetilde{X_{ND}}) \, \mathbb{1} \texttt{ // hodge dual} \\
+                \end{gather*}
+                Where $ X_{ND} $ is $ X $ without degenerate basis vectors, e.g.
+                $$ X = e_{012}; \, X_{ND} = e_{12} $$
+            \par
+                Let $ \mathbb{G}_{a,b,c} $ be a geometric algebra with $ a $ positive,
+                $ b $ negative and $ c $ zero basis vectors.
+            \par
+                Then for $ \mathbb{G}_{a,0,c} $:
+                $$ \overline{X} = X^\star $$
+            \par
+                And if that wasn't confusing enough applying a dual twice changes the signs,
+                so we also want the inverses of these duals:
+                \begin{gather*}
+                    (X^\star)^{\star^{-1}} = X \\
+                \end{gather*}
+                TODO: right complement inverse?
         \section{Shapes and sizes}
             \par
                 TODO
