@@ -50,6 +50,7 @@
     \usepackage{tikz} % overdash
     %\usepackage{MnSymbol} % https://texdoc.org/serve/symbols-a4.pdf/0
     \usepackage{hyperref} % hyperlinks
+    \usepackage{mdframed} % boxes
     \hypersetup{
         colorlinks=true,
         linkcolor=cyan,
@@ -85,6 +86,8 @@
     \newcommand{\braket}[1]{\left\langle{#1}\right\rangle}
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
+    \newcommand{\boxedmath}[1]{\begin{center}\boxed{$$#1$$}\end{center}
+    }
 
     % dashed overline
     \newcommand{\overdash}[1]{%
@@ -238,31 +241,53 @@
                 Then for $ \mathbb{G}_{a,0,c} $:
                 $$ \overline{X_i} = X_i^\star $$
             \par
-                And if all that wasn't confusing enough, applying a dual twice changes the signs,
+                And if that wasn't confusing enough, applying a dual twice changes the signs,
                 so we also want the inverses of these duals:
                 \begin{gather*}
                     (X_i^\star)^{\star^{-1}} = X_i \\
                     \overdash{\overline{X_i}} = X_i \\
                     \underdash{\underline{X_i}} = X_i
                 \end{gather*}
-        \section{Shapes and sizes}
             \par
-                Let $ \mathbb{G}_{d+1,0,1} $ be a d-dimensional PGA with $ (e_0)^2 = 0 $ and $ (e_i)^2 = 1 $.
-            \par
-                It turns out, in 2D and 3D, we can simplify implementations
+                In 2D and 3D PGA, we can simplify implementation
                 by swapping two basis vectors in some blades such that
                 $ \overline{X_i} $ does not flip signs, e.g.
                 $$\begin{aligned}
                     A = & \, A_1 + A_2 e_0 + A_3 e_1 + A_4 e_2 \\
                     &+ A_5 e_{01} + A_6 e_{20} + A_7 e_{12} + A_8 e_{012} \\
-                    \overline{A} = & \, A_8 + A_7 e_0 + A_6 e_1 + A_5 e_2 \\
+                    \overdash{A} = \overline{A} =  & \, A_8 + A_7 e_0 + A_6 e_1 + A_5 e_2 \\
                     &+ A_4 e_{01} + A_3 e_{20} + A_2 e_{12} + A_1 e_{012} \\
                 \end{aligned}$$
+        \section{Shapes and sizes}
             \par
-                Points in PGA are represented by (n-1)-vectors:
-                $$ \overline{e_0 + x e_1 + y e_2 + ...} $$
-                \aside{This is a kind of a lie, you can make an equivalent dual algebra by letting points be vectors,
-                in fact many operations make use of computing in this dual algebra via $ \overdash{\overline{A} \T{ op } \overline{B}} $}
+                Let $ \mathbb{G}_{d,0,1} $ be a d-dimensional PGA:
+                $$ \B{e_0}^2 = 0;\, \B{e_i}^2 = 1 $$
+            \par
+                Now we have a choice to make: \vspace{5px}
+                \begin{enumerate}
+                    \item \texttt{Point-based PGA}
+                        \begin{enumerate}[-]
+                            \item \texttt{vectors are points}
+                            \item \texttt{(n-1)-vectors are hyperplanes}
+                        \end{enumerate}
+                    \item \texttt{Plane-based PGA}
+                        \begin{enumerate}[-]
+                            \item \texttt{vectors are hyperplanes}
+                            \item \texttt{(n-1)-vectors are points}
+                        \end{enumerate}
+                \end{enumerate}
+            \par
+                Both of these are equally valid and many operations make use of computing in the dual algebra
+                via $ \overdash{\overline{A} \T{ op } \overline{B}} $.
+                \begin{align*}
+                    &point = e_0 + x e_1 + y e_2 + ... + w e_d \\
+                    &hyperplane = \overline{e_0 + x e_1 + y e_2 + ... + w e_d}
+                \end{align*}
+                \boxedmath{\begin{aligned}
+                    &hyperplane = e_0 + x e_1 + y e_2 + ... + w e_d \\
+                    &point = \overline{e_0 + x e_1 + y e_2 + ... + w e_d}
+                \end{aligned}}
+                \aside{We will denote Plane-based operations inside boxes whenever they differ.}
             \par
                 Let $ \braket{A}_k $ be the grade selection operator:
                 \begin{gather*}
@@ -275,8 +300,8 @@
             \par
                 Then we can start defining binary operators:
                 $$\begin{aligned}
-                    A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \texttt{ // dot product} \\
-                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} \texttt{ // wedge product} \\
+                    A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \, \texttt{// dot product} \\
+                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} \, \texttt{// wedge product} \\
                     A \vee B &= \overdash{\overline{A} \wedge \overline{B}} \texttt{ // antiwedge product}
                 \end{aligned}$$
                 \aside{In other words the wedge product is equal to the geometric product if the grades add together:
@@ -284,17 +309,19 @@
                 \aside{All of these operators retain distributivity and associativity}
             \par
                 The antiwedge product allows you to join points into lines, planes, ...
-                $$\begin{aligned}
+                \boxedmath{\begin{aligned}
                     line &= point_1 \vee point_2 \\
                     plane &= point_1 \vee point_2 \vee point_3
-                \end{aligned}$$
+                \end{aligned}}
+                \aside{TODO: Point-based join}
                 \aside{In fact this works with any two geometric objects, operators that don't have this property aren't really worth your time.}
             \par
                 And the wedge product allows you to meet two objects:
-                $$\begin{aligned}
+                \boxedmath{\begin{aligned}
                     &point = line_1 \wedge line_2 \\
                     &line = plane_1 \wedge plane_2
-                \end{aligned}$$
+                \end{aligned}}
+                \aside{TODO: Point-based meet}
             \par
                 If you meet two parallel lines, you get an infinite point = a point at infinity:
                 $$ line_1 \wedge line_1 = \overline{x e_1 + y e_2 + ...} $$ % TODO: check this
