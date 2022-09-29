@@ -207,12 +207,14 @@
                 $$ X_i \in \T{k-vector} $$
                 we can define some operations, like reversing the order of
                 basis vectors in the blade, that amount to flipping some signs:
-                $$\begin{aligned}
-                    \tilde{X_i} &= (-1)^\floor{k/2} X_i \texttt{ // reverse} \\
-                    X_i^\dagger &= (-1)^\floor{k} X_i \texttt{ // involute} \\
-                    \bar{X_i} &= (-1)^\floor{k+k/2} X_i \texttt{ // conjugate} \\
-                    &f(A) = \sum_i f(X_i)
-                \end{aligned}$$
+                \begin{gather*}
+                    \begin{aligned}
+                        \tilde{X_i} &= (-1)^\floor{k/2} X_i \texttt{ // reverse} \\
+                        X_i^\dagger &= (-1)^\floor{k} X_i \texttt{ // involute} \\
+                        \bar{X_i} &= (-1)^\floor{k+k/2} X_i \texttt{ // conjugate}
+                    \end{aligned} \\
+                    f(A) = \sum_i f(X_i)
+                \end{gather*}
             \par
                 Poincaré duality states that maps between k-vectors and (n-k)-vectors exist.
                 \begin{gather*}
