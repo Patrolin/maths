@@ -82,7 +82,8 @@
     \newcommand{\bitxor}{\T{ }\raisebox{0.5ex}{$\scriptstyle\wedge$}\T{ }}
     \newcommand{\rightshift}{\T{ }\M{>>}\T{ }}
     \newcommand{\leftshift}{\T{ }\M{<<}\T{ }}
-    \newcommand{\matrixmul}{\T{ }\M{@}\T{ }}
+    \newcommand{\join}{{\,\M{join}\,}}
+    \newcommand{\meet}{{\,\M{meet}\,}}
     \newcommand{\braket}[1]{\left\langle{#1}\right\rangle}
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
@@ -108,10 +109,11 @@
 \author{\textsc{Patrolin}}
 \date{\today}
 \newcommand{\abstracttext}{
+    Information on Geometric Algebra is scattered and scarce.
     This is an explanation of how to calculate PGA, but not necessarily why it works
     - for that you can try \href{https://www.youtube.com/playlist?list=PLVuwZXwFua-0Ks3rRS4tIkswgUmDLqqRy}{sudgylacmoe} on youtube.
     I would also point you to \href{https://bivector.net/tools.html}{bivector.net}, but their dual calculations are whack,
-    the \href{https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR}{ganja.js} ones are presumably correct, since their demos work.
+    the \href{https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR}{ganja.js} ones are presumably correct, since their demos seem to work.
 }
 
 % body
@@ -300,33 +302,47 @@
             \par
                 Then we can start defining binary operators:
                 $$\begin{aligned}
-                    A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \, \texttt{// dot product} \\
+                    %A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \, \texttt{// dot product} \\
                     A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} \, \texttt{// wedge product} \\
                     A \vee B &= \overdash{\overline{A} \wedge \overline{B}} \texttt{ // antiwedge product}
                 \end{aligned}$$
-                \aside{In other words the wedge product is equal to the geometric product if the grades add together:
-                    $ \T{j-vector} \wedge \T{k-vector} = \T{(j+k)-vector} $, otherwise it's $ 0 $}
-                \aside{All of these operators retain distributivity and associativity}
+                \aside{These operators retain distributivity and associativity.}
             \par
-                The antiwedge product allows you to join points into lines, planes, ...
+                We can join points into lines, planes, ...
+                \begin{align*}
+                    line &= point_1 \join point_2 \\
+                    plane &= point_1 \join point_2 \join point_3
+                \end{align*} \vspace{-25px}
+                \begin{align*}
+                    A \join B = A \wedge B
+                \end{align*}
                 \boxedmath{\begin{aligned}
-                    line &= point_1 \vee point_2 \\
-                    plane &= point_1 \vee point_2 \vee point_3
+                    A \join B = A \vee B
                 \end{aligned}}
-                \aside{TODO: Point-based join}
                 \aside{In fact this works with any two geometric objects, operators that don't have this property aren't really worth your time.}
             \par
-                And the wedge product allows you to meet two objects:
+                And we can meet two objects:
+                \begin{align*}
+                    &point = line_1 \meet line_2 \\
+                    &point = plane \meet line \\
+                    &line = plane_1 \meet plane_2
+                \end{align*} \vspace{-25px}
+                \begin{align*}
+                    A \meet B = A \vee B
+                \end{align*}
                 \boxedmath{\begin{aligned}
-                    &point = line_1 \wedge line_2 \\
-                    &line = plane_1 \wedge plane_2
+                    A \meet B = A \wedge B
                 \end{aligned}}
-                \aside{TODO: Point-based meet}
             \par
-                If you meet two parallel lines, you get an infinite point = a point at infinity:
-                $$ line_1 \wedge line_1 = \overline{x e_1 + y e_2 + ...} $$ % TODO: check this
+                If you meet two parallel lines, you get a point at infinity = an infinite point:
+                \begin{align*}
+                    line_1 \meet line_1 = x e_1 + y e_2 + ... + w e_d
+                \end{align*}
+                \boxedmath{\begin{aligned}
+                    line_1 \meet line_1 = \overline{x e_1 + y e_2 + ... + w e_d}
+                \end{aligned}}
                 \aside{All objects in GA have an orientation, so if you flip the direction of one of the lines,
-                you would get an infinite point in the other direction}
+                you get an infinite point in the other direction}
             \par
                 TODO: something about sizes of line segments / volumes
             \par
@@ -340,6 +356,6 @@
                 \end{aligned}$$
                 \aside{In 3D, rotors are quaternions.} % TODO: and motors are dual quaternions?
             \par
-                TODO: applying motors and line forces
+                TODO: applying motors and line forces per https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR and https://bivector.net/PGADYN.html
     \end{multicols*}
 \end{document}
