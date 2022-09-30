@@ -86,6 +86,7 @@
     \newcommand{\meet}{{\,\M{meet}\,}}
     \newcommand{\braket}[1]{\left\langle{#1}\right\rangle}
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
+    \newcommand{\norm}[1]{{\left\lVert{#1}\right\rVert}}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
     \newcommand{\boxedmath}[1]{\begin{center}\boxed{$$#1$$}\end{center}
     }
@@ -111,8 +112,9 @@
 \newcommand{\abstracttext}{
     Information on Geometric Algebra is scattered and scarce.
     This is an explanation of how to calculate PGA, but not necessarily why it works
-    - for that you can try \href{https://www.youtube.com/playlist?list=PLVuwZXwFua-0Ks3rRS4tIkswgUmDLqqRy}{sudgylacmoe} on youtube.
-    I would also point you to \href{https://bivector.net/tools.html}{bivector.net}, but their dual calculations are whack,
+    - for that you can try \href{https://www.youtube.com/playlist?list=PLVuwZXwFua-0Ks3rRS4tIkswgUmDLqqRy}{sudgylacmoe} on youtube and
+    \href{https://projectivegeometricalgebra.net/}{Eric Lengyel}'s cheatsheet for point-based PGA (though he goes mad with power).
+    We would also point you to \href{https://bivector.net/tools.html}{bivector.net}, but their dual calculations are whack,
     the \href{https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR}{ganja.js} ones are presumably correct, since their demos seem to work.
 }
 
@@ -336,7 +338,7 @@
             \par
                 If you meet two parallel lines, you get a point at infinity = an infinite point:
                 \begin{align*}
-                    line_1 \meet line_1 = x e_1 + y e_2 + ... + w e_d
+                    line_1 \meet line_1 = x e_1 + y e_2 + ... + w e_d % TODO: check this
                 \end{align*}
                 \boxedmath{\begin{aligned}
                     line_1 \meet line_1 = \overline{x e_1 + y e_2 + ... + w e_d}
@@ -344,18 +346,48 @@
                 \aside{All objects in GA have an orientation, so if you flip the direction of one of the lines,
                 you get an infinite point in the other direction}
             \par
+                TODO: distance of line to A -> raytraced graphing calculator
+                TODO: distance of point to project(point, A) -> raymarched graphing calculator
+                TODO: cos(A, B); sin(A, B)
+            \par
                 TODO: something about sizes of line segments / volumes
             \par
                 TODO: projection to camera plane + depth buffer
+                Projection: $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot and inverse
         \section{Motors}
             \par
-                TODO: something about bivector blades being rotations
+                Taking $ e^{bivector} $ gives us a motor (motion operator), we can apply motors via $ M A \tilde{M} $:
                 $$\begin{aligned}
                     rotor &= e^{bivector^{ND}} \\
-                    motor &= e^{bivector}
+                    motor &= e^{bivector} \\
+                    rotor &\in motor
                 \end{aligned}$$
                 \aside{In 3D, rotors are quaternions.} % TODO: and motors are dual quaternions?
             \par
-                TODO: applying motors and line forces per https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR and https://bivector.net/PGADYN.html
+                Where bivector blades are rotations. For example $ \F{\theta}{2} e_{12} $ is an xy rotation by $ \theta $ degrees
+                and $ \F{d}{2} e_{01} $ is a translation by $ d $:
+                \begin{gather*}
+                    e^{\F{\theta}{2} e_{12}} = cos \,\F{\theta}{2} + \B{sin \,\F{\theta}{2}} e_{12} \\
+                    e^{\F{d}{2} e_{01}} = 1 + \F{d}{2} e_{01} \\
+                \end{gather*}
+            \par
+                We can interpolate motors with nlerp or slerp, where $ BA^{-1} $ is a transformation that brings A to B:
+                \begin{gather*}
+                    nlerp(t, A, B) = \F{lerp(t, A, B)}{\norm{lerp(t, A, B)}} \\
+                    lerp(t, A, B) = (1-t) A + t B \\
+                    slerp(t, A, B) = (BA^{-1})^t A \\
+                    A^{-1} = \F{A}{\norm{A}^2} \\ % TODO: does inverse involve the reverse?
+                    \norm{A} = \sqrt{\sum_i |\B{A_i X_i}^2|} = \sqrt{\sum_i \B{A^{ND}_i}^2}
+                \end{gather*}
+                \aside{nlerp does not allow for unnormalized motors, but we will be normalizing them in the physics simulation anyways.}
+            \par
+                While we're at it we might as well define other norms:
+                \begin{gather*}
+                    \norm{A}_D = \sqrt{\sum_i \B{A^D_i}^2} \\
+                    \norm{A}_F = \sqrt{\sum_i \B{A_i}^2}
+                \end{gather*}
+                \aside{Where $ A^D $ is $ A $ with only degenerate basis vectors.}
+            \par
+                TODO: line forces per https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR and https://bivector.net/PGADYN.html
     \end{multicols*}
 \end{document}
