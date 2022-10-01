@@ -84,6 +84,7 @@
     \newcommand{\leftshift}{\T{ }\M{<<}\T{ }}
     \newcommand{\join}{{\,\M{join}\,}}
     \newcommand{\meet}{{\,\M{meet}\,}}
+    \newcommand{\anticdot}{~\raisebox{1pt}{\tikz \draw[line width=0.6pt] circle(1.1pt);}~}
     \newcommand{\braket}[1]{\left\langle{#1}\right\rangle}
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
     \newcommand{\norm}[1]{{\left\lVert{#1}\right\rVert}}
@@ -232,7 +233,7 @@
             \par
                 For example:
                 \begin{gather*}
-                    \underline{X_i} X_i = \mathbb{1} \texttt{ // left complement} \\
+                    \underline{X_i} X_i = \mathbb{1} \texttt{ // left complement} \\ % TODO: left complement is the inverse of right complement!
                     X_i \overline{X_i} = \mathbb{1} \texttt{ // right complement} \\
                     X_i X_i^\star = sign(X^{ND}_i \widetilde{X^{ND}_i}) \, \mathbb{1} \texttt{ // hodge dual}
                 \end{gather*}
@@ -306,7 +307,7 @@
                 $$\begin{aligned}
                     %A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \, \texttt{// dot product} \\
                     A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} \, \texttt{// wedge product} \\
-                    A \vee B &= \overdash{\overline{A} \wedge \overline{B}} \texttt{ // antiwedge product}
+                    A \vee B &= \overdash{\overline{A} \wedge \overline{B}} \texttt{ // antiwedge product} % TODO: this adds antigrades()
                 \end{aligned}$$
                 \aside{These operators retain distributivity and associativity.}
             \par
@@ -346,14 +347,22 @@
                 \aside{All objects in GA have an orientation, so if you flip the direction of one of the lines,
                 you get an infinite point in the other direction}
             \par
-                TODO: distance of line to A -> raytraced graphing calculator
-                TODO: distance of point to project(point, A) -> raymarched graphing calculator
-                TODO: cos(A, B); sin(A, B)
-            \par
+                TODO: something about objects being direction + position \\
+                TODO: something about planes being normal + distance \\
                 TODO: something about sizes of line segments / volumes
+            \subsection{Rasterization}
             \par
                 TODO: projection to camera plane + depth buffer
                 Projection: $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot and inverse
+            \subsection{Raytracing}
+                \par
+                    TODO: $ line_1 \wedge line_2 = signed\_distance(line_1, line_2) \norm{line_1^{ND} \wedge line_2^{ND}} $ \\
+                    TODO: correlate of signed distance between lines: $ line_1 \vee line_2 $ -> ray-triangle intersection -> raytraced game \\
+                    TODO: distance of line to A -> raytraced graphing calculator \\
+                    TODO: cos(A, B); sin(A, B)
+            \subsection{Raymarching}
+                    TODO: distance of point to project(point, A) -> raymarched graphing calculator \\
+            \subsection{}
         \section{Motors}
             \par
                 Taking $ e^{bivector} $ gives us a motor (motion operator), we can apply motors via $ M A \tilde{M} $:
