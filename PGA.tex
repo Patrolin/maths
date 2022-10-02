@@ -144,7 +144,7 @@
             \par
                 We can multiply these numbers together using the geometric product:
                 \begin{gather*}
-                    e_i e_i = \{1, -1, 0\} \\
+                    \B{e_i}^2 = \{1, -1, 0\} \\
                     e_i e_j = -e_j e_i
                 \end{gather*}
             \par
@@ -156,7 +156,6 @@
                     (AB)C &= A(BC) \\
                     aB &= Ba;\, a \in \mathbb{R}
                 \end{aligned}$$
-            \vfill\null\columnbreak
             \par
                 Thus the product of two complex numbers:
                 $$\begin{aligned}
@@ -174,8 +173,8 @@
                     \item \texttt{bivector = 2-vector}
                     \item \texttt{trivector = 3-vector}
                     \item \texttt{...}
-                    \item \texttt{(n-1)-vector = pseudovector}
-                    \item \texttt{n-vector = pseudoscalar =} $\mathbb{1}$
+                    \item \texttt{pseudovector = (n-1)-vector}
+                    \item \texttt{pseudoscalar = n-vector =} $\mathbb{1}$
                 \end{enumerate} \vspace{5px}
                 Where a k-vector has $n \choose k$ blades, for example:
                 $$\begin{aligned}
@@ -246,12 +245,11 @@
                 Then for $ \mathbb{G}_{a,0,c} $:
                 $$ \overline{X_i} = X_i^\star $$
             \par
-                And if that wasn't confusing enough, applying a dual twice changes the signs,
+                And applying a dual twice changes the signs,
                 so we also want the inverses of these duals:
                 \begin{gather*}
                     (X_i^\star)^{\star^{-1}} = X_i \\
-                    \overdash{\overline{X_i}} = X_i \\
-                    \underdash{\underline{X_i}} = X_i
+                    \underline{\overline{X_i}} = X_i
                 \end{gather*}
             \par
                 In 2D and 3D PGA, we can simplify implementation
@@ -260,7 +258,7 @@
                 $$\begin{aligned}
                     A = & \, A_1 + A_2 e_0 + A_3 e_1 + A_4 e_2 \\
                     &+ A_5 e_{01} + A_6 e_{20} + A_7 e_{12} + A_8 e_{012} \\
-                    \overdash{A} = \overline{A} =  & \, A_8 + A_7 e_0 + A_6 e_1 + A_5 e_2 \\
+                    \underline{A} = \overline{A} =  & \, A_8 + A_7 e_0 + A_6 e_1 + A_5 e_2 \\
                     &+ A_4 e_{01} + A_3 e_{20} + A_2 e_{12} + A_1 e_{012} \\
                 \end{aligned}$$
         \section{Shapes and sizes}
@@ -283,7 +281,7 @@
                 \end{enumerate}
             \par
                 Both of these are equally valid and many operations make use of computing in the dual algebra
-                via $ \overdash{\overline{A} \T{ op } \overline{B}} $.
+                via $ \underline{\overline{A} \T{ op } \overline{B}} $.
                 \begin{align*}
                     &point = e_0 + x e_1 + y e_2 + ... + w e_d \\
                     &hyperplane = \overline{e_0 + x e_1 + y e_2 + ... + w e_d}
@@ -296,22 +294,22 @@
             \par
                 Let $ \braket{A}_k $ be the grade selection operator:
                 \begin{gather*}
-                    \braket{A}_k = \sum_i \braket{X_i}_k \\
                     \braket{X_i}_k = \begin{cases}
                         X_i & (X_i \in \T{k-vector}) \\
                         0 & (X_i \notin \T{k-vector})
-                    \end{cases}
+                    \end{cases} \\
+                    \braket{A}_k = \sum_i \braket{X_i}_k
                 \end{gather*}
             \par
-                Then we can start defining binary operators:
-                $$\begin{aligned}
-                    %A \cdot B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{0} \, \texttt{// dot product} \\
-                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} \, \texttt{// wedge product} \\
-                    A \vee B &= \overdash{\overline{A} \wedge \overline{B}} \texttt{ // antiwedge product} % TODO: this adds antigrades()
-                \end{aligned}$$
+                Then we can define the wedge $ \wedge $ and antiwedge $ \vee $ products:
+                \begin{align*}
+                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} = \underline{\overline{A} \vee \overline{B}} \\ % TODO: check this
+                    A \vee B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{n-((n-j)+(n-k))} \\
+                    &= \underline{\overline{A} \wedge \overline{B}}
+                \end{align*}
                 \aside{These operators retain distributivity and associativity.}
             \par
-                We can join points into lines, planes, ...
+                We can then join points into lines and lines into planes:
                 \begin{align*}
                     line &= point_1 \join point_2 \\
                     plane &= point_1 \join point_2 \join point_3
@@ -344,32 +342,80 @@
                 \boxedmath{\begin{aligned}
                     line_1 \meet line_1 = \overline{x e_1 + y e_2 + ... + w e_d}
                 \end{aligned}}
-                \aside{All objects in GA have an orientation, so if you flip the direction of one of the lines,
+                \aside{If you flip the direction of one of the lines,
                 you get an infinite point in the other direction}
             \par
-                TODO: something about objects being direction + position \\
-                TODO: something about planes being normal + distance \\
-                TODO: something about sizes of line segments / volumes
+                All objects in PGA have an direction $ A^D $ and position $ A^P $:
+                \begin{gather*}
+                    A^D = \sum_i A_i X_i \quad (e_0 \in X_i) \\
+                    A^P = \sum_i A_i X_i \quad (e_0 \notin X_i)
+                \end{gather*}
+            \par
+                In 2D and 3D:
+                \begin{align*}
+                    point = e_0 &+ A^P \\
+                    line = A^D &+ A^P
+                \end{align*}
+            \par
+                In 3D:
+                \begin{align*}
+                    plane = A^D &+ A_{15} e_{123} \\
+                    = normal &+ distance
+                \end{align*}
+            \par
+                We can take norms to measure the direction or the position:
+                \begin{align*}
+                    \norm{A}_D &= \sqrt{\sum_i \B{A^D_i}^2} \\
+                    \norm{A}_P &= \sqrt{\sum_i \B{A^P_i}^2} \\
+                    &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \norm{A} \\
+                    A^{-1} &= \tilde{A} \F{1}{\norm{A}^2}
+                \end{align*}
+                \aside{A is finite if $ \norm{A}_D \ne 0 $, therefore infinite objects have no direction.}
+            \vfill\null\columnbreak
+            \par
+                We can use this to calculate lengths/areas/volumes/...:
+                \begin{align*}
+                    length(edge\_loop) &= \sum_i \norm{line_i}_P \\
+                    area(edge\_loop) &= \F{1}{2} \sum_i \norm{line_i}_D \\
+                    line_i &= p_i \join p_{i+1} \\
+                    area(triangle\_mesh) &= \F{1}{2} \sum_i \norm{plane_i}_P \\
+                    volume(triangle\_mesh) &= \F{1}{3} \sum_i \norm{plane_i}_D \\
+                    plane_i &= p_i \join p_{i+1} \join p_{i+2}
+                \end{align*}
             \subsection{Rasterization}
             \par
-                TODO: projection to camera plane + depth buffer
-                Projection: $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot and inverse
+                We could just take the $ x,y $ components of a d-dimensional point and get an orthographic projection.
+            \par
+                But we could also just make a line from the camera (at the origin) to a point and then intersect it with a plane:
+                \begin{gather*}
+                    p_{perspective} = (p_{camera} \join p_{vertex}) \meet (xy\_plane) \\
+                    xy\_plane = p_1 \join p_2 \join p_3 \\
+                    depth(p_{vertex}) = \norm{p_{vertex}}_P
+                \end{gather*}
+                TODO: project(A, B): $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot and inverse
+                TODO: project(point\_at\_origin, B)
+                TODO: project(plane\_at\_infinity, B)
             \subsection{Raytracing}
                 \par
-                    TODO: $ line_1 \wedge line_2 = signed\_distance(line_1, line_2) \norm{line_1^{ND} \wedge line_2^{ND}} $ \\
+                    TODO: $ line_1 \wedge line_2 \\= signed\_distance(line_1, line_2) \norm{line_1^D \wedge line_2^D} $ \\
                     TODO: correlate of signed distance between lines: $ line_1 \vee line_2 $ -> ray-triangle intersection -> raytraced game \\
                     TODO: distance of line to A -> raytraced graphing calculator \\
+                    TODO: ?
+                    $$ distance(A, B) = \begin{cases}
+                        \underline{A \wedge \overline{B}} & (type(A) = type(B)) \\
+                        distance(A, project(A, B)) & (type(A) \ne type(B)) \\
+                    \end{cases} $$
                     TODO: cos(A, B); sin(A, B)
             \subsection{Raymarching}
-                    TODO: distance of point to project(point, A) -> raymarched graphing calculator \\
+                    TODO: signed distance of point to A -> raymarched graphing calculator \\
             \subsection{}
         \section{Motors}
             \par
                 Taking $ e^{bivector} $ gives us a motor (motion operator), we can apply motors via $ M A \tilde{M} $:
                 $$\begin{aligned}
-                    rotor &= e^{bivector^{ND}} \\
                     motor &= e^{bivector} \\
-                    rotor &\in motor
+                    rotor &= e^{bivector^D}; rotor &\in motor \\
+                    translator &= e^{bivector^P}; translator &\in motor
                 \end{aligned}$$
                 \aside{In 3D, rotors are quaternions.} % TODO: and motors are dual quaternions?
             \par
@@ -384,18 +430,9 @@
                 \begin{gather*}
                     nlerp(t, A, B) = \F{lerp(t, A, B)}{\norm{lerp(t, A, B)}} \\
                     lerp(t, A, B) = (1-t) A + t B \\
-                    slerp(t, A, B) = (BA^{-1})^t A \\
-                    A^{-1} = \F{A}{\norm{A}^2} \\ % TODO: does inverse involve the reverse?
-                    \norm{A} = \sqrt{\sum_i |\B{A_i X_i}^2|} = \sqrt{\sum_i \B{A^{ND}_i}^2}
+                    slerp(t, A, B) = (BA^{-1})^t A
                 \end{gather*}
                 \aside{nlerp does not allow for unnormalized motors, but we will be normalizing them in the physics simulation anyways.}
-            \par
-                While we're at it we might as well define other norms:
-                \begin{gather*}
-                    \norm{A}_D = \sqrt{\sum_i \B{A^D_i}^2} \\
-                    \norm{A}_F = \sqrt{\sum_i \B{A_i}^2}
-                \end{gather*}
-                \aside{Where $ A^D $ is $ A $ with only degenerate basis vectors.}
             \par
                 TODO: line forces per https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR and https://bivector.net/PGADYN.html
     \end{multicols*}
