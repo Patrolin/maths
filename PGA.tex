@@ -87,7 +87,10 @@
     \newcommand{\anticdot}{~\raisebox{1pt}{\tikz \draw[line width=0.6pt] circle(1.1pt);}~}
     \newcommand{\braket}[1]{\left\langle{#1}\right\rangle}
     \newcommand{\floor}[1]{{\left\lfloor{#1}\right\rfloor}}
-    \newcommand{\norm}[1]{{\left\lVert{#1}\right\rVert}}
+    \newcommand{\snorm}[1]{{\left\lVert{#1}\right\rVert}}
+    \newcommand{\inorm}[1]{{\left\lVert{#1}\right\rVert}_\infty}
+    \newcommand{\dnorm}[1]{{\left\lVert{#1}\right\rVert}_D}
+    \newcommand{\pnorm}[1]{{\left\lVert{#1}\right\rVert}_P}
     \newcommand{\aside}[1]{\begin{flushright}\scriptsize{#1}\end{flushright}}
     \newcommand{\boxedmath}[1]{\begin{center}\boxed{$$#1$$}\end{center}
     }
@@ -364,24 +367,24 @@
             \par
                 We can take norms to measure the direction or the position:
                 \begin{align*}
-                    \norm{A}_D &= \sqrt{\sum_i \B{A^D_i}^2} \\
-                    \norm{A}_P &= \sqrt{\sum_i \B{A^P_i}^2} \\
-                    \norm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \norm{A}_P \\
+                    \dnorm{A} &= \sqrt{\sum_i \B{A^D_i}^2} \\
+                    \pnorm{A} &= \sqrt{\sum_i \B{A^P_i}^2} \\
+                    \snorm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \pnorm{A} \\
                 \end{align*}
                 \boxedmath{\begin{aligned}
-                    \norm{A} &= \norm{A}_D \\
+                    \snorm{A} &= \dnorm{A} \\
                 \end{aligned}}
-                $$ A^{-1} = \tilde{A} \F{1}{\norm{A}^2} $$
-                \aside{A is finite if $ \norm{A}_D \ne 0 $, therefore infinite objects have no direction.}
+                $$ A^{-1} = \tilde{A} \F{1}{\snorm{A}^2} $$ % TODO: check this
+                \aside{A is finite if $ \dnorm{A} \ne 0 $, therefore infinite objects have no direction.}
             %\vfill\null\columnbreak
             \par
                 We can use this to calculate lengths/areas/volumes/...:
                 \begin{align*}
-                    length(edge\_loop) &= \sum_i \norm{line_i}_P \\ % TODO: check this in both algebras
-                    area(edge\_loop) &= \F{1}{2} \sum_i \norm{line_i}_D \\
+                    length(edge\_loop) &= \sum_i \pnorm{line_i} \\ % TODO: check this
+                    area(edge\_loop) &= \F{1}{2} \sum_i \dnorm{line_i} \\
                     line_i &= p_i \join p_{i+1} \\
-                    area(triangle\_mesh) &= \F{1}{2} \sum_i \norm{plane_i}_P \\
-                    volume(triangle\_mesh) &= \F{1}{3} \sum_i \norm{plane_i}_D \\
+                    area(triangle\_mesh) &= \F{1}{2} \sum_i \pnorm{plane_i} \\
+                    volume(triangle\_mesh) &= \F{1}{3} \sum_i \dnorm{plane_i} \\
                     plane_i &= p_i \join p_{i+1} \join p_{i+2}
                 \end{align*}
             \subsection{Rasterization}
@@ -392,21 +395,21 @@
                 \begin{gather*}
                     p_{perspective} = (p_{camera} \join p_{vertex}) \meet (xy\_plane) \\
                     xy\_plane = p_1 \join p_2 \join p_3 \\
-                    depth(p_{vertex}) = \norm{p_{vertex}}_P
+                    depth(p_{vertex}) = \pnorm{p_{vertex}}
                 \end{gather*}
                 TODO: project(A, B): $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot
                 TODO: project(point\_at\_origin, B)
                 TODO: project(plane\_at\_infinity, B)
             \subsection{Raytracing}
                 \par
-                    TODO: $ line_1 \wedge line_2 \\= signed\_distance(line_1, line_2) \norm{line_1^D \wedge line_2^D} $ \\
+                    TODO: $ line_1 \wedge line_2 \\= signed\_distance(line_1, line_2) \snorm{line_1^D \wedge line_2^D} $ \\ % TODO: check this
                     TODO: correlate of signed distance between lines: $ line_1 \vee line_2 $ -> ray-triangle intersection -> raytraced game \\
                     TODO: distance of line to A -> raytraced graphing calculator \\
                     TODO: ?
-                    $$ distance(A, B) = \begin{cases}
+                    {\small$$ d(A, B) = \begin{cases}
                         \underline{A \wedge \overline{B}} & (type(A) = type(B)) \\
-                        distance(A, project(A, B)) & (type(A) \ne type(B)) \\
-                    \end{cases} $$
+                        d(A, project(A, B)) & (type(A) \ne type(B)) \\
+                    \end{cases} $$}
                     TODO: cos(A, B) = A dot A / (A.norm() B.norm()); sin(A, B) = ?
             \subsection{Raymarching}
                     TODO: signed distance of point to A -> raymarched graphing calculator \\
@@ -430,7 +433,7 @@
             \par
                 We can interpolate motors with nlerp or slerp, where $ BA^{-1} $ is a transformation that brings A to B:
                 \begin{gather*}
-                    nlerp(t, A, B) = \F{lerp(t, A, B)}{\norm{lerp(t, A, B)}} \\
+                    nlerp(t, A, B) = \F{lerp(t, A, B)}{\snorm{lerp(t, A, B)}} \\ % TODO: check this
                     lerp(t, A, B) = (1-t) A + t B \\
                     slerp(t, A, B) = (BA^{-1})^t A
                 \end{gather*}
@@ -444,9 +447,9 @@
                     X_i^\dagger = (-1)^\floor{k} X_i \texttt{ // involute} \\
                     \bar{X_i} = (-1)^\floor{k+k/2} X_i \texttt{ // conjugate}
                 \end{gather*}
-                $$ \norm{A}_\infty = \norm{A}_D $$
+                $$ \inorm{A} = \dnorm{A} $$
                 \boxedmath{\begin{gathered}
-                    \norm{A}_\infty = \norm{A}_P
+                    \inorm{A} = \pnorm{A}
                 \end{gathered}}
     \end{multicols*}
 \end{document}
