@@ -370,15 +370,20 @@
                 \begin{align*}
                     \norm{A}_D &= \sqrt{\sum_i \B{A^D_i}^2} \\
                     \norm{A}_P &= \sqrt{\sum_i \B{A^P_i}^2} \\
-                    &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \norm{A} \\
-                    A^{-1} &= \tilde{A} \F{1}{\norm{A}^2}
+                    \norm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \norm{A}_P \\
+                    %\norm{A}_\infty &= \norm{A}_D \\ % TODO: do we need inorm?
                 \end{align*}
+                \boxedmath{\begin{aligned}
+                    \norm{A} &= \norm{A}_D \\
+                    %\norm{A}_\infty &= \norm{A}_P \\
+                \end{aligned}}
+                $$ A^{-1} = \tilde{A} \F{1}{\norm{A}^2} $$
                 \aside{A is finite if $ \norm{A}_D \ne 0 $, therefore infinite objects have no direction.}
-            \vfill\null\columnbreak
+            %\vfill\null\columnbreak
             \par
                 We can use this to calculate lengths/areas/volumes/...:
                 \begin{align*}
-                    length(edge\_loop) &= \sum_i \norm{line_i}_P \\
+                    length(edge\_loop) &= \sum_i \norm{line_i}_P \\ % TODO: check this in both algebras
                     area(edge\_loop) &= \F{1}{2} \sum_i \norm{line_i}_D \\
                     line_i &= p_i \join p_{i+1} \\
                     area(triangle\_mesh) &= \F{1}{2} \sum_i \norm{plane_i}_P \\
@@ -395,7 +400,7 @@
                     xy\_plane = p_1 \join p_2 \join p_3 \\
                     depth(p_{vertex}) = \norm{p_{vertex}}_P
                 \end{gather*}
-                TODO: project(A, B): $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot and inverse
+                TODO: project(A, B): $ P = (A \cdot B^{-1}) B $ ? % TODO: define dot
                 TODO: project(point\_at\_origin, B)
                 TODO: project(plane\_at\_infinity, B)
             \subsection{Raytracing}
@@ -408,7 +413,7 @@
                         \underline{A \wedge \overline{B}} & (type(A) = type(B)) \\
                         distance(A, project(A, B)) & (type(A) \ne type(B)) \\
                     \end{cases} $$
-                    TODO: cos(A, B); sin(A, B)
+                    TODO: cos(A, B) = A dot A / (A.norm() B.norm()); sin(A, B) = ?
             \subsection{Raymarching}
                     TODO: signed distance of point to A -> raymarched graphing calculator \\
             \subsection{}
