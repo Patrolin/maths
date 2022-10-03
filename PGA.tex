@@ -216,8 +216,6 @@
                 \begin{gather*}
                     \begin{aligned}
                         \tilde{X_i} &= (-1)^\floor{k/2} X_i \texttt{ // reverse} \\
-                        X_i^\dagger &= (-1)^\floor{k} X_i \texttt{ // involute} \\
-                        \bar{X_i} &= (-1)^\floor{k+k/2} X_i \texttt{ // conjugate} \\
                     \end{aligned} \\
                     X_i \in \T{k-vector} \\
                     f(A) = \sum_i f(X_i)
@@ -226,8 +224,7 @@
                 Poincaré duality states that maps between k-vectors and (n-k)-vectors exist.
                 \begin{gather*}
                     X_i \, dual(X_i) = \plusminus \mathbb{1} \\
-                    dual(X_i) = \plusminus X_{2^n-i+1} \\
-                    dual(A) = \sum_i dual(X_i)
+                    dual(X_i) = \plusminus X_{2^n-i+1}
                 \end{gather*}
             \par
                 For example:
@@ -238,7 +235,6 @@
                 \end{gather*}
                 Where $ X^{ND}_i $ is $ X_i $ without degenerate basis vectors, e.g.
                 $$ X_i = e_{012}; \, X^{ND}_i = e_{12} $$
-                \aside{For $ \mathbb{G}_{a,b,0} $: $ X_i^\star = X_i \tilde{\mathbb{1}} $}
                 \aside{For $ \mathbb{G}_{a,0,c} $: $ X_i^\star = \overline{X_i} $}
             \par
                 And applying a dual twice changes the signs,
@@ -371,11 +367,9 @@
                     \norm{A}_D &= \sqrt{\sum_i \B{A^D_i}^2} \\
                     \norm{A}_P &= \sqrt{\sum_i \B{A^P_i}^2} \\
                     \norm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \norm{A}_P \\
-                    %\norm{A}_\infty &= \norm{A}_D \\ % TODO: do we need inorm?
                 \end{align*}
                 \boxedmath{\begin{aligned}
                     \norm{A} &= \norm{A}_D \\
-                    %\norm{A}_\infty &= \norm{A}_P \\
                 \end{aligned}}
                 $$ A^{-1} = \tilde{A} \F{1}{\norm{A}^2} $$
                 \aside{A is finite if $ \norm{A}_D \ne 0 $, therefore infinite objects have no direction.}
@@ -443,5 +437,16 @@
                 \aside{nlerp does not allow for unnormalized motors, but we will be normalizing them in the physics simulation anyways.}
             \par
                 TODO: line forces per https://enki.ws/ganja.js/examples/coffeeshop.html\#sUwbwu9vR and https://bivector.net/PGADYN.html
+        \section{Bonus}
+            \par
+                Useless operators that are just here for completeness:
+                \begin{gather*}
+                    X_i^\dagger = (-1)^\floor{k} X_i \texttt{ // involute} \\
+                    \bar{X_i} = (-1)^\floor{k+k/2} X_i \texttt{ // conjugate}
+                \end{gather*}
+                $$ \norm{A}_\infty = \norm{A}_D $$
+                \boxedmath{\begin{gathered}
+                    \norm{A}_\infty = \norm{A}_P
+                \end{gathered}}
     \end{multicols*}
 \end{document}
