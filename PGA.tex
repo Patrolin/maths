@@ -135,11 +135,13 @@
                     \B{e_1}^2 = 1;\, \B{e_2}^2 = -1;\, \B{e_0}^2 = 0
                 \end{gather*}
             \par
-                In fact, we can define as many of these as we want, the simplest examples being:
+                In fact, we can define as many of these as we want with a geometric algebra $ \mathbb{G}_{a,b,c} $
+                having $ a $ numbers that square to $ 1 $, $ b $ that square to $ -1 $
+                and $ c $ that square to $ 0 $ (degenerate basis vectors):
                 $$\begin{aligned}
-                    &a + b e_1 \texttt{ // hyperbolic numbers} \\
-                    &a + b e_2 \texttt{ // complex numbers} \\
-                    &a + b e_0 \texttt{ // dual numbers}
+                    &(a + b e_1) \in \mathbb{G}_{1,0,0} \texttt{ // hyperbolic numbers} \\
+                    &(a + b e_2) \in \mathbb{G}_{0,1,0} \texttt{ // complex numbers} \\
+                    &(a + b e_0) \in \mathbb{G}_{0,0,1} \texttt{ // dual numbers}
                 \end{aligned}$$
             \par
                 We can multiply these numbers together using the geometric product:
@@ -147,6 +149,7 @@
                     \B{e_i}^2 = \{1, -1, 0\} \\
                     e_i e_j = -e_j e_i
                 \end{gather*}
+                \aside{The result is another number in the same algebra $ \mathbb{G}_{a,b,c} $}
             \par
                 This product is neither commutative nor anticommutative, but it is distributive and associative:
                 $$\begin{aligned}
@@ -185,9 +188,7 @@
                 \end{aligned}$$
                 \aside{We can abbreviate blades like $ e_1 e_2 $ as $ e_{12} $.}
             \par
-                Multiplying two multivectors gives you another multivector,
-                we can use the taylor series expansion of the exponential function
-                to find a rotation $e^A$:
+                We can use the exponential function to find a rotation $e^A$:
                 $$ e^x = \sum_{k=0}^\infty \F{x^k}{k!} $$
                 $$\begin{aligned}
                     &e^{a e_2} = 1 + a e_2 - \F{a^2}{2} - \F{a^3}{3} e_2 + ... \\
@@ -197,29 +198,28 @@
             \par
                 Similarly you can find
                 $$ e^{e_i} = \begin{cases}
-                    cos(a) + sin(a) e_i & (\B{e_i}^2 = -1) \\
                     cosh(a) + sinh(a) e_i & (\B{e_i}^2 = 1) \\
+                    cos(a) + sin(a) e_i & (\B{e_i}^2 = -1) \\
                     1 + e_i & (\B{e_i}^2 = 0)
-                    \end{cases}$$
+                \end{cases}$$
             \par
-                This gives us rotations, hyperbolic rotations and translations (rotations through infinity) respectively.
+                This gives us hyperbolic rotations, rotations and translations (rotations through infinity) respectively.
             \par
-                Then for a multivector we would have:
+                For the i-th blade $ X_i $ in a multivector:
                 \begin{gather*}
-                    e^A = e^{A_1} e^{A_2 e_0} e^{A_3 e_1} \, ... \, e^{A_n e_I} \\
+                    e^A = \prod_i e^{A_i X_i} \\
                 \end{gather*}
         \section{Unary operators}
             \par
-                For the i-th blade in a multivector
-                $$ X_i \in \T{k-vector} $$
-                we can define some operations, like reversing the order of
+                We can define some operations, like reversing the order of
                 basis vectors in the blade, that amount to flipping some signs:
                 \begin{gather*}
                     \begin{aligned}
                         \tilde{X_i} &= (-1)^\floor{k/2} X_i \texttt{ // reverse} \\
                         X_i^\dagger &= (-1)^\floor{k} X_i \texttt{ // involute} \\
-                        \bar{X_i} &= (-1)^\floor{k+k/2} X_i \texttt{ // conjugate}
+                        \bar{X_i} &= (-1)^\floor{k+k/2} X_i \texttt{ // conjugate} \\
                     \end{aligned} \\
+                    X_i \in \T{k-vector} \\
                     f(A) = \sum_i f(X_i)
                 \end{gather*}
             \par
@@ -232,21 +232,17 @@
             \par
                 For example:
                 \begin{gather*}
-                    \underline{X_i} X_i = \mathbb{1} \texttt{ // left complement} \\ % TODO: left complement is the inverse of right complement!
+                    \underline{X_i} X_i = \mathbb{1} \texttt{ // left complement} \\
                     X_i \overline{X_i} = \mathbb{1} \texttt{ // right complement} \\
                     X_i X_i^\star = sign(X^{ND}_i \widetilde{X^{ND}_i}) \, \mathbb{1} \texttt{ // hodge dual}
                 \end{gather*}
                 Where $ X^{ND}_i $ is $ X_i $ without degenerate basis vectors, e.g.
                 $$ X_i = e_{012}; \, X^{ND}_i = e_{12} $$
-            \par
-                Let $ \mathbb{G}_{a,b,c} $ be a geometric algebra with $ a $ positive,
-                $ b $ negative and $ c $ zero basis vectors.
-            \par
-                Then for $ \mathbb{G}_{a,0,c} $:
-                $$ \overline{X_i} = X_i^\star $$
+                \aside{For $ \mathbb{G}_{a,b,0} $: $ X_i^\star = X_i \tilde{\mathbb{1}} $}
+                \aside{For $ \mathbb{G}_{a,0,c} $: $ X_i^\star = \overline{X_i} $}
             \par
                 And applying a dual twice changes the signs,
-                so we also want the inverses of these duals:
+                so we also want their inverses:
                 \begin{gather*}
                     (X_i^\star)^{\star^{-1}} = X_i \\
                     \underline{\overline{X_i}} = X_i
@@ -347,21 +343,28 @@
             \par
                 All objects in PGA have an direction $ A^D $ and position $ A^P $:
                 \begin{gather*}
+                    A = A^D + A^P \\
                     A^D = \sum_i A_i X_i \quad (e_0 \in X_i) \\
                     A^P = \sum_i A_i X_i \quad (e_0 \notin X_i)
                 \end{gather*}
+                \boxedmath{\begin{gathered}
+                    A^D = \sum_i A_i X_i \quad (e_0 \notin X_i) \\
+                    A^P = \sum_i A_i X_i \quad (e_0 \in X_i)
+                \end{gathered}}
             \par
                 In 2D and 3D:
                 \begin{align*}
                     point = e_0 &+ A^P \\
                     line = A^D &+ A^P
                 \end{align*}
+                \boxedmath{point = \overline{e_0} + A^P}
             \par
                 In 3D:
                 \begin{align*}
                     plane = A^D &+ A_{15} e_{123} \\
                     = normal &+ distance
                 \end{align*}
+                \boxedmath{plane = A^D + A_2 e_0}
             \par
                 We can take norms to measure the direction or the position:
                 \begin{align*}
