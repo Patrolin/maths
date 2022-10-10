@@ -97,15 +97,15 @@
 
     % dashed overline
     \newcommand{\overdash}[1]{%
-        \tikz[baseline=(todotted.base)]{
-            \node[inner sep=1pt,outer sep=0pt] (todotted) {$#1$};
-            \draw[dashed, line width=0.05mm] (todotted.north west) -- (todotted.north east);
+        \tikz[baseline=(text.base)]{
+            \node[inner sep=1pt,outer sep=0pt] (text) {$#1$};
+            \draw[dashed, line width=0.05mm] (text.north west) -- (text.north east);
         }%
     }
     \newcommand{\underdash}[1]{%
-        \tikz[baseline=(todotted.base)]{
-            \node[inner sep=1pt,outer sep=0pt] (todotted) {$#1$};
-            \draw[dashed, line width=0.2mm] (todotted.south west) -- (todotted.south east);
+        \tikz[baseline=(text.base)]{
+            \node[inner sep=1pt,outer sep=0pt] (text) {$#1$};
+            \draw[dashed, line width=0.2mm] (text.south west) -- (text.south east);
         }%
     }
 
@@ -298,7 +298,7 @@
             \par
                 Then we can define the wedge $ \wedge $ and antiwedge $ \vee $ products:
                 \begin{align*}
-                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} = \underline{\overline{A} \vee \overline{B}} \\ % TODO: check this
+                    A \wedge B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{j+k} = \underline{\overline{A} \vee \overline{B}} \\
                     A \vee B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{n-((n-j)+(n-k))} \\
                     &= \underline{\overline{A} \wedge \overline{B}}
                 \end{align*}
