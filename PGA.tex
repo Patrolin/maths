@@ -302,7 +302,7 @@
                     A \vee B &= \sum_{j,k} \braket{\braket{A}_j \braket{B}_k}_{n-((n-j)+(n-k))} \\
                     &= \underline{\overline{A} \wedge \overline{B}}
                 \end{align*}
-                \aside{These operators retain distributivity and associativity.}
+                \aside{These operators retain distributivity, associativity and noncommutativity.}
             \par
                 We can then join points into lines and lines into planes:
                 \begin{align*}
@@ -335,10 +335,9 @@
                     line_1 \meet line_1 = x e_1 + y e_2 + ... + w e_d % TODO: check this
                 \end{align*}
                 \boxedmath{\begin{aligned}
-                    line_1 \meet line_1 = \overline{x e_1 + y e_2 + ... + w e_d}
+                    line_1 \meet line_1 \approx \overline{x e_1 + y e_2 + ... + w e_d}
                 \end{aligned}}
-                \aside{If you flip the direction of one of the lines,
-                you get an infinite point in the other direction}
+                \aside{You probably want to ignore the sign flips from the dual, otherwise you'd be changing the coordinates.} % TODO: check this
             \par
                 All objects in PGA have an direction $ A^D $ and position $ A^P $:
                 \begin{gather*}
@@ -366,16 +365,16 @@
                 \boxedmath{plane = A^D + A_2 e_0}
             \par
                 We can take norms to measure the direction or the position:
+                $$ \dnorm{A} = \sqrt{\sum_i \B{A^D_i}^2} $$
+                \aside{A is finite when $ \dnorm{A} \ne 0 $, therefore infinite objects have no direction.}
                 \begin{align*}
-                    \dnorm{A} &= \sqrt{\sum_i \B{A^D_i}^2} \\
                     \pnorm{A} &= \sqrt{\sum_i \B{A^P_i}^2} \\
-                    \snorm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \pnorm{A} \\
+                    \snorm{A} &= \sqrt{\sum_i |\B{A_i X_i}^2|} = \pnorm{A}
                 \end{align*}
                 \boxedmath{\begin{aligned}
-                    \snorm{A} &= \dnorm{A} \\
+                    \snorm{A} &= \dnorm{A}
                 \end{aligned}}
                 $$ A^{-1} = \tilde{A} \F{1}{\snorm{A}^2} $$ % TODO: check this
-                \aside{A is finite if $ \dnorm{A} \ne 0 $, therefore infinite objects have no direction.}
             %\vfill\null\columnbreak
             \par
                 We can use this to calculate lengths/areas/volumes/...:
