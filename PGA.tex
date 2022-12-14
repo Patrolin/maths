@@ -208,10 +208,16 @@
             \par
                 This gives us hyperbolic rotations, rotations and translations (rotations through infinity) respectively.
             \par
-                For the i-th blade $ X_i $ in a multivector:
+                With $ X_i = $ the i-th blade in a multivector:
                 \begin{gather*}
                     e^A = \prod_i e^{A_i X_i} \\
                 \end{gather*}
+                \aside{This operation depends on the order of the basis blades. \\
+                For graphics you would want rotation, then translation. \\
+                ($ e_0 $ should be last)}
+                % TODO: is this definition even useful?
+                % TODO: pow = log(A)*B?
+                % TODO: log = ?
         \section{Unary operators}
             \par
                 We can define some operations, like reversing the order of
@@ -434,7 +440,7 @@
                 \begin{gather*}
                     nlerp(t, A, B) = \F{lerp(t, A, B)}{\snorm{lerp(t, A, B)}} \\ % TODO: check this
                     lerp(t, A, B) = (1-t) A + t B \\
-                    slerp(t, A, B) = (BA^{-1})^t A
+                    slerp(t, A, B) = (BA^{-1})^t A % TODO: define A pow x
                 \end{gather*}
                 \aside{nlerp does not allow for unnormalized motors, but we will be normalizing them in the physics simulation anyways.}
             \par
